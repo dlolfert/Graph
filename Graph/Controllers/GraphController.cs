@@ -165,14 +165,26 @@ namespace Graph.Controllers
                 {
                     conn.ConnectionString = "Server=10.0.0.220,1466;Database=Barchart;User Id=sa;Password=@a88word";
                     //comm.CommandText = $"SELECT [Symbol], [Name] FROM [Barchart].[dbo].[Top100]";
-                    
-                     var stmt = 
-                     "WITH cte AS " +
+
+                    var stmt =
+                        //"WITH cte AS " +
+                        //   "( " +
+                        //   "SELECT *, " +
+                        //   "ROW_NUMBER() OVER (PARTITION BY Symbol ORDER BY Date DESC) AS rn " +
+                        //   "FROM ZacksRank " +
+                        //   ") Select * from cte where rn = 1";
+
+                        "WITH cte AS " +
                         "( " +
-                        "SELECT *, " +
-                        "ROW_NUMBER() OVER (PARTITION BY Symbol ORDER BY Date DESC) AS rn " +
+                        "    SELECT *, " +
+                        "    ROW_NUMBER() OVER(PARTITION BY Symbol ORDER BY Date DESC) AS rn " +
                         "FROM ZacksRank " +
-                        ") Select * from cte where rn = 1";
+                        "), " +
+                        "Name AS(Select[Name], [Symbol] From Top100) " +
+                        "Select CTE.[Symbol], Name.[Name], CTE.[Rank], CTE.[Date] from cte Inner Join Name on CTE.Symbol = Name.Symbol Where rn = 1";
+
+
+
 
                     comm.CommandText = stmt;
 
@@ -188,6 +200,7 @@ namespace Graph.Controllers
                             t.Name = Convert.ToString(dr["Symbol"]);
                             t.Symbol = Convert.ToString(dr["Symbol"]);
                             t.Rank = Convert.ToString(dr["Rank"]);
+                            t.Name = Convert.ToString(dr["Name"]);
                             tickers.Add(t);
                         }
                     }
