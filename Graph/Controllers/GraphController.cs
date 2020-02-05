@@ -27,37 +27,9 @@ namespace Graph.Controllers
         [Route("Graph/Details/{symbol}")]
         public ActionResult Details(string symbol)
         {
-            //var md = new List<ZackRank>();
-            
-            //md.Add( new ZackRank() {Symbol = "alsn", Rank = "1", RankDate = "2018-01-01"});
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "1", RankDate = "2018-01-02" });
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "2", RankDate = "2018-01-03" });
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "2", RankDate = "2018-01-04" });
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "2", RankDate = "2018-01-05" });
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "3", RankDate = "2018-01-06" });
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "2", RankDate = "2018-01-07" });
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "2", RankDate = "2018-01-08" });
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "1", RankDate = "2018-01-09" });
-            //md.Add(new ZackRank() { Symbol = "alsn", Rank = "1", RankDate = "2018-01-10" });
-
-            //var json = "";
-            //json += "[";
-            //json += "['2018-01-01', -1],";
-            //json += "['2018-01-02', -1],";
-            //json += "['2018-01-03', -2],";
-            //json += "['2018-01-04', -2],";
-            //json += "['2018-01-05', -2],";
-            //json += "['2018-01-06', -3],";
-            //json += "['2018-01-07', -3],";
-            //json += "['2018-01-08', -2],";
-            //json += "['2018-01-09', -1],";
-            //json += "['2018-01-10', -1]";
-            //json += "]";
-
-            ////return View();
             return View("Details", GetRankBySymbol(symbol));
         }
-        
+
         // GET: Graph/Create
         public ActionResult Create()
         {
@@ -135,8 +107,17 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=10.0.0.220,1466;Database=Barchart;User Id=sa;Password=@a88word";
-                    comm.CommandText =$"SELECT (Rank * -1) AS Rank, [Date] FROM [ZacksRank] Where Symbol = '{symbol}' Order By Date Desc";
+                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    comm.CommandText = $"SELECT (Rank * -1) AS Rank, " +
+                        "CASE IsNull(Momentum, 'F') " +
+                        "WHEN 'F' THEN '1' " +
+                        "WHEN 'D' THEN '2' " +
+                        "WHEN 'C' THEN '3' " +
+                        "WHEN 'B' THEN '4' " +
+                        "WHEN 'A' THEN '5' " +
+                        "END " +
+                        "AS Momentum, "
+                        + $" [Date] FROM [ZacksRank] Where Symbol = '{symbol}' Order By Date Desc";
                     comm.Connection = conn;
                     conn.Open();
 
@@ -146,7 +127,7 @@ namespace Graph.Controllers
                         while (dr.Read())
                         {
                             json +=
-                                $"['{Convert.ToDateTime(dr["Date"]).ToString("yyyy/MM/dd")}',{Convert.ToString(dr["Rank"])}],";
+                                $"['{Convert.ToDateTime(dr["Date"]).ToString("yyyy/MM/dd")}',{Convert.ToString(dr["Rank"])},{Convert.ToString(dr["Momentum"])}],";
                         }
                     }
                 }
@@ -163,7 +144,7 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=10.0.0.220,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
                     //comm.CommandText = $"SELECT [Symbol], [Name] FROM [Barchart].[dbo].[Top100]";
 
                     var stmt =
@@ -216,7 +197,7 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=10.0.0.220,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
                     comm.CommandText = $"SELECT TOP (1) [Rank], [Date] FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' Order by DATE DESC";
                     comm.Connection = conn;
                     conn.Open();
