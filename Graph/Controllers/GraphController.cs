@@ -30,6 +30,12 @@ namespace Graph.Controllers
             return View("Details", GetRankBySymbol(symbol));
         }
 
+        [Route("Graph/DayHigh/{symbol}")]
+        public ActionResult DayHigh(string symbol)
+        {
+            return View("DayHigh", GetDayHighBySymbol(symbol));
+        }
+
         // GET: Graph/Create
         public ActionResult Create()
         {
@@ -136,6 +142,41 @@ namespace Graph.Controllers
             json = json.Substring(0, json.LastIndexOf(','));
             return json += "]";
         }
+
+        private string GetDayHighBySymbol(string symbol)
+        {
+            string json = "[";
+
+            using (SqlCommand comm = new SqlCommand())
+            {
+                using (SqlConnection conn = new SqlConnection())
+                {
+                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    comm.CommandText = "SELECT TOP 100" +
+                        "[Date], ([DayHigh] - [Open]) AS DayHigh " +
+                        "FROM[Barchart].[dbo].[ZacksRank] " +
+                        $"Where Symbol = '{symbol}' " +
+                        "And([DayHigh] - [Open]) >= 0.00 " +
+                        "Order By Date DESC";
+                    comm.Connection = conn;
+                    conn.Open();
+
+                    SqlDataReader dr = comm.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            json +=
+                                $"['{Convert.ToDateTime(dr["Date"]).ToString("yyyy/MM/dd")}',{Convert.ToString(dr["DayHigh"])}],";
+                        }
+                    }
+                }
+            }
+
+            json = json.Substring(0, json.LastIndexOf(','));
+            return json += "]";
+        }
+
         private List<Ticker> GetSymbols()
         {
             List<Ticker> tickers = new List<Ticker>();

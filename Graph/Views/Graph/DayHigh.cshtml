@@ -1,0 +1,36 @@
+﻿@model string
+@{
+    ViewData["Title"] = "DayHigh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        // Define the chart to be drawn.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'DayHigh');
+        data.addRows(@Html.Raw(Model));
+        //data.addRows([
+        //    ['2018-01-01', 1],
+        //    ['2018-01-02', 1],
+        //    ['2018-01-03', 2]
+        //]);
+
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.ColumnChart(document.getElementById('DayHigh'));
+            
+        //alert(chart);
+        chart.draw(data, null);
+    }
+    </script>
+<h2>DayHigh</h2>
+<div>
+    <div id="DayHigh"></div>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
