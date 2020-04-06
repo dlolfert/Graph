@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 <script type="text/javascript">
     google.charts.load('current', {packages: ['corechart']});
@@ -15,14 +16,10 @@
         data.addColumn('number', 'Rank');
         data.addColumn('number', 'Momentum');
         data.addRows(@Html.Raw(Model));
-        //data.addRows([
-        //    ['2018-01-01', 1],
-        //    ['2018-01-02', 1],
-        //    ['2018-01-03', 2]
-        //]);
-
+        
         // Instantiate and draw the chart.
-        var chart = new google.visualization.LineChart(document.getElementById('myPieChart'));
+        var chart = new google.visualization.LineChart(document.getElementById('Details'));
+
         //alert(chart);
         chart.draw(data, null);
     }
@@ -38,31 +35,8 @@
             }
         }*@
 
-    <div id="myPieChart"></div>
-    @*<input type="button" onclick="javascript:drawChart();" value="Draw Chart!!"/>*@
-
-    @*<h4>ZackRank</h4>
-        <hr />
-        <dl class="row">
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Symbol)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Symbol)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Rank)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Rank)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.RankDate)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.RankDate)
-            </dd>
-        </dl>*@
+    <div id="Details"></div>
+    
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |

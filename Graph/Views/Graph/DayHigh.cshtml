@@ -1,7 +1,10 @@
-﻿@model string
+﻿@model Graph.Controllers.DayHigh
 @{
     ViewData["Title"] = "DayHigh";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string array = Model.DHArray;
+    string avg = Model.average;
 }
     <script type="text/javascript">
     google.charts.load('current', {packages: ['corechart']});
@@ -12,21 +15,48 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Date');
         data.addColumn('number', 'DayHigh');
-        data.addRows(@Html.Raw(Model));
-        //data.addRows([
-        //    ['2018-01-01', 1],
-        //    ['2018-01-02', 1],
-        //    ['2018-01-03', 2]
-        //]);
-
+        data.addColumn('number', 'DayLow');
+        data.addRows(@Html.Raw(array));
+        
         // Instantiate and draw the chart.
         var chart = new google.visualization.ColumnChart(document.getElementById('DayHigh'));
-            
+
+        var options = {
+            colors: ['green', 'red']
+        };
+        /*
+         var options = {
+        hAxis: {
+          title: 'Time'
+        },
+        vAxis: {
+          title: 'Popularity'
+        }
+      };
+ 
+         */
+
+
         //alert(chart);
-        chart.draw(data, null);
+        chart.draw(data, options);
     }
     </script>
 <h2>DayHigh</h2>
+<div>
+    <table>
+        <tr><td>Name</td><td>@Model.name</td></tr>
+        <tr><td>Symbol</td><td>@Model.symbol</td></tr>
+        <tr><td>Average</td><td>@Model.average</td></tr>
+        <tr><td># Days Above Avg</td><td>@Model.DaysAboveAvg</td></tr>
+        <tr><td>Days Above Avg</td><td>@Model.PercentDaysAboveAvg%</td></tr>
+        <tr><td># Days High Above Open</td><td>@Model.DaysHighAboveOpen</td></tr>
+        <tr><td>Days High Above Open</td><td>@Model.PercentHighAboveOpen%</td></tr>
+        <tr><td># Days Close Above Open</td><td>@Model.DaysCloseAboveOpen</td></tr>
+        <tr><td>Days Close Above Open</td><td>@Model.PercentDaysCloseAboveOpen%</td></tr>
+        <tr><td># Records</td><td>@Model.records</td></tr>
+        <tr><td>Standard Deviation</td><td>@Model.StdDev</td></tr>
+    </table>
+</div>
 <div>
     <div id="DayHigh"></div>
 </div>
