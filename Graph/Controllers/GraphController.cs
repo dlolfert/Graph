@@ -34,7 +34,7 @@ namespace Graph.Controllers
         public ActionResult DayHigh(string symbol)
         {
             DayHigh dh = GetHeaderInfo(symbol);
-
+            GetSumGrid(dh, symbol);
             //string average = GetDayHighAverage(symbol);
             dh.DHArray = GetDayHighBySymbol(symbol);
             return View("DayHigh", dh);
@@ -182,6 +182,39 @@ namespace Graph.Controllers
             return dh;
             //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
         }
+
+        private DayHigh GetSumGrid(DayHigh dh, string symbol)
+        {
+            using (SqlCommand comm = new SqlCommand())
+            {
+                using (SqlConnection conn = new SqlConnection())
+                {
+                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    comm.CommandText = "SumGrid";
+                    comm.CommandType = System.Data.CommandType.StoredProcedure;
+                    comm.Parameters.AddWithValue("Symbol", symbol);
+                    comm.Connection = conn;
+                    conn.Open();
+
+                    SqlDataReader dr = comm.ExecuteReader();
+                    dr.Read();
+
+                    dh.V100 = Convert.ToString(dr["T100"]);
+                    dh.V90 = Convert.ToString(dr["T90"]);
+                    dh.V80 = Convert.ToString(dr["T80"]);
+                    dh.V70 = Convert.ToString(dr["T70"]);
+                    dh.V60 = Convert.ToString(dr["T60"]);
+                    dh.V50 = Convert.ToString(dr["T50"]);
+                    dh.V40 = Convert.ToString(dr["T40"]);
+                    dh.V30 = Convert.ToString(dr["T30"]);
+                    dh.V20 = Convert.ToString(dr["T20"]);
+                    dh.V10 = Convert.ToString(dr["T10"]);
+                }
+            }
+            return dh;
+            //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
+        }
+
         private string GetDayHighAverage(string symbol)
         {
             string average = string.Empty;
@@ -218,7 +251,7 @@ namespace Graph.Controllers
                 using (SqlConnection conn = new SqlConnection())
                 {
                     conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
-                    comm.CommandText = "SELECT TOP 100 " +
+                    comm.CommandText = "SELECT " +
                         "[Date], " +
                         "CASE  " +
                         "WHEN ([DayHigh] - [Open]) > 0 THEN ([DayHigh] - [Open]) " +
@@ -228,7 +261,7 @@ namespace Graph.Controllers
                         "WHEN ([DayHigh] - [Open]) <= 0 THEN ([Open] - [Close]) " +
                         "ELSE '0.00' " +
                         "END AS DayLow " +
-                        $"FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' Order By Date DESC";
+                        $"FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -100, GETDATE()) Order By Date DESC";
                     comm.Connection = conn;
                     conn.Open();
 
@@ -330,7 +363,7 @@ namespace Graph.Controllers
     public class DayHigh
     {
         //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
-//USO NULL	0.14	21	9.22	5.74	29	66	97	0.18	68
+        //USO NULL	0.14	21	9.22	5.74	29	66	97	0.18	68
 
         public string symbol { get; set; }
         public string name { get; set; }
@@ -344,5 +377,16 @@ namespace Graph.Controllers
         public string StdDev { get; set; }
         public string records { get; set; }
         public string DHArray { get; set; }
+
+        public string V100 { get; set; }
+        public string V90 { get; set; }
+        public string V80 { get; set; }
+        public string V70 { get; set; }
+        public string V60 { get; set; }
+        public string V50 { get; set; }
+        public string V40 { get; set; }
+        public string V30 { get; set; }
+        public string V20 { get; set; }
+        public string V10 { get; set; }
     }
 }
