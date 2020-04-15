@@ -60,6 +60,23 @@
 <div>
     <div id="DayHigh"></div>
 </div>
+
+<div>
+    <table>
+        <tr>
+            <td>@Model.V100</td>
+            <td>@Model.V90</td>
+            <td>@Model.V80</td>
+            <td>@Model.V70</td>
+            <td>@Model.V60</td>
+            <td>@Model.V50</td>
+            <td>@Model.V40</td>
+            <td>@Model.V30</td>
+            <td>@Model.V20</td>
+            <td>@Model.V10</td>
+        </tr>
+    </table>
+</div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>
