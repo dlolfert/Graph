@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using Graph.Models;
+﻿using Graph.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Remotion.Linq.Clauses;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
+using System.Net;
+
 
 namespace Graph.Controllers
 {
     public class GraphController : Controller
     {
+        private string cs = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+
         // GET: Graph
         public ActionResult Index()
         {
@@ -23,6 +26,7 @@ namespace Graph.Controllers
         {
             return View("Ticker", GetSymbols());
         }
+
         // GET: Graph/Details/5
         [Route("Graph/Details/{symbol}")]
         public ActionResult Details(string symbol)
@@ -33,6 +37,7 @@ namespace Graph.Controllers
         [Route("Graph/DayHigh/{symbol}")]
         public ActionResult DayHigh(string symbol)
         {
+            DownloadHistory(symbol);
             DayHigh dh = GetHeaderInfo(symbol);
             GetSumGrid(dh, symbol);
             //string average = GetDayHighAverage(symbol);
@@ -118,17 +123,17 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    conn.ConnectionString = cs;
                     comm.CommandText = $"SELECT (Rank * -1) AS Rank, " +
-                        "CASE IsNull(Momentum, 'F') " +
-                        "WHEN 'F' THEN '1' " +
-                        "WHEN 'D' THEN '2' " +
-                        "WHEN 'C' THEN '3' " +
-                        "WHEN 'B' THEN '4' " +
-                        "WHEN 'A' THEN '5' " +
-                        "END " +
-                        "AS Momentum, "
-                        + $" [Date] FROM [ZacksRank] Where Symbol = '{symbol}' Order By Date Desc";
+                                       "CASE IsNull(Momentum, 'F') " +
+                                       "WHEN 'F' THEN '1' " +
+                                       "WHEN 'D' THEN '2' " +
+                                       "WHEN 'C' THEN '3' " +
+                                       "WHEN 'B' THEN '4' " +
+                                       "WHEN 'A' THEN '5' " +
+                                       "END " +
+                                       "AS Momentum, "
+                                       + $" [Date] FROM [ZacksRank] Where Symbol = '{symbol}' Order By Date Desc";
                     comm.Connection = conn;
                     conn.Open();
 
@@ -147,16 +152,17 @@ namespace Graph.Controllers
             json = json.Substring(0, json.LastIndexOf(','));
             return json += "]";
         }
+
         //[GetHeaderInfo]
         private DayHigh GetHeaderInfo(string symbol)
         {
             DayHigh dh = new DayHigh();
-                        
+
             using (SqlCommand comm = new SqlCommand())
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    conn.ConnectionString = cs;
                     comm.CommandText = "GetHeaderInfo";
                     comm.CommandType = System.Data.CommandType.StoredProcedure;
                     comm.Parameters.AddWithValue("Symbol", symbol);
@@ -177,8 +183,12 @@ namespace Graph.Controllers
                     dh.PercentHighAboveOpen = Convert.ToString(dr["% Day High Above Open"]);
                     dh.StdDev = Convert.ToString(dr["StdDev"]);
                     dh.records = Convert.ToString(dr["Records"]);
+                    dh.lastClose = Convert.ToString(dr["LastClose"]);
+                        //Console.WriteLine($"{n:#,##0.0K}");
+                    dh.avgVolume = Convert.ToString($"{dr["avgVolume"]:###,###,###,###}");
                 }
             }
+
             return dh;
             //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
         }
@@ -189,7 +199,7 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    conn.ConnectionString = cs;
                     comm.CommandText = "SumGrid";
                     comm.CommandType = System.Data.CommandType.StoredProcedure;
                     comm.Parameters.AddWithValue("Symbol", symbol);
@@ -211,6 +221,7 @@ namespace Graph.Controllers
                     dh.V10 = Convert.ToString(dr["T10"]);
                 }
             }
+
             return dh;
             //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
         }
@@ -222,26 +233,28 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    conn.ConnectionString = cs;
                     comm.CommandText = "SELECT " +
-                        "AVG(DayHigh - [Open]) " +
-                        "FROM[Barchart].[dbo].[ZacksRank] " +
-                        $"Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -100, [Date])";
+                                       "AVG(DayHigh - [Open]) " +
+                                       "FROM[Barchart].[dbo].[ZacksRank] " +
+                                       $"Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -100, [Date])";
                     comm.Connection = conn;
                     conn.Open();
 
                     average = Convert.ToString(comm.ExecuteScalar());
                 }
             }
+
             try
             {
                 return Convert.ToDecimal(average).ToString("#.##");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ".00";
             }
         }
+
         private string GetDayHighBySymbol(string symbol)
         {
             string json = "[";
@@ -250,18 +263,18 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    conn.ConnectionString = cs;
                     comm.CommandText = "SELECT " +
-                        "[Date], " +
-                        "CASE  " +
-                        "WHEN ([DayHigh] - [Open]) > 0 THEN ([DayHigh] - [Open]) " +
-                        "ELSE '0.00' " +
-                        "END AS DayHigh, " +
-                        "CASE " +
-                        "WHEN ([DayHigh] - [Open]) <= 0 THEN ([Open] - [Close]) " +
-                        "ELSE '0.00' " +
-                        "END AS DayLow " +
-                        $"FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -100, GETDATE()) Order By Date DESC";
+                                       "[Date], " +
+                                       "CASE  " +
+                                       "WHEN ([DayHigh] - [Open]) > 0 THEN ([DayHigh] - [Open]) " +
+                                       "ELSE '0.00' " +
+                                       "END AS DayHigh, " +
+                                       "CASE " +
+                                       "WHEN ([DayHigh] - [Open]) <= 0 THEN ([Open] - [Close]) " +
+                                       "ELSE '0.00' " +
+                                       "END AS DayLow " +
+                                       $"FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -100, GETDATE()) Order By Date DESC";
                     comm.Connection = conn;
                     conn.Open();
 
@@ -276,7 +289,8 @@ namespace Graph.Controllers
                     }
                 }
             }
-            if(json.LastIndexOf(',') > 0) json = json.Substring(0, json.LastIndexOf(','));
+
+            if (json.LastIndexOf(',') > 0) json = json.Substring(0, json.LastIndexOf(','));
             return json += "]";
         }
 
@@ -288,7 +302,7 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+                    conn.ConnectionString = cs;
                     //comm.CommandText = $"SELECT [Symbol], [Name] FROM [Barchart].[dbo].[Top100]";
 
                     var stmt =
@@ -341,8 +355,9 @@ namespace Graph.Controllers
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
-                    comm.CommandText = $"SELECT TOP (1) [Rank], [Date] FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' Order by DATE DESC";
+                    conn.ConnectionString = cs;
+                    comm.CommandText =
+                        $"SELECT TOP (1) [Rank], [Date] FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' Order by DATE DESC";
                     comm.Connection = conn;
                     conn.Open();
 
@@ -359,7 +374,126 @@ namespace Graph.Controllers
 
             return "6";
         }
+
+        private void DownloadHistory(string symbol)
+        {
+            try
+            {
+                var wr = WebRequest.Create(
+                    $"http://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1=1555601628&period2=1587224028&interval=1d&events=history");
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var resp = wr.GetResponse();
+
+                var sr = new StreamReader(resp.GetResponseStream());
+
+
+
+                System.IO.File.AppendAllText($"C:\\Users\\dlolf\\Downloads\\{symbol}.csv", sr.ReadToEnd());
+                UploadData($"C:\\Users\\dlolf\\Downloads\\{symbol}.csv", symbol);
+                //Microsoft.VisualBasic.FileSystem.Rename($"C:\\Users\\dlolf\\Downloads\\{symbol}.csvx", $"C:\\Users\\dlolf\\Downloads\\{symbol}.csv");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void UploadData(string path, string symbol)
+        {
+            string sqlCommand = string.Empty;
+
+            //string[] files = Directory.GetFiles(@"C:\Users\dlolf\Downloads", "*.csv");
+            //foreach (var file in files)
+            //{
+            try
+            {
+
+
+                var lines = System.IO.File.ReadAllLines(path);
+
+                bool header = true;
+                foreach (var line in lines)
+                {
+                    try
+                    {
+                        if (!header)
+                        {
+                            var fields = line.Split(",".ToCharArray());
+                            record rec = new record();
+                            rec.date = fields[0];
+                            rec.open = fields[1];
+                            rec.high = fields[2];
+                            rec.low = fields[3];
+                            rec.close = fields[4];
+                            rec.adjclose = fields[5];
+                            rec.volume = fields[6];
+
+                            if (SymbolDateExist(symbol, rec.date))
+                            {
+                                sqlCommand =
+                                    $"Update [ZacksRank] Set DayHigh = '{rec.high}', [Open] = '{rec.open}', [Close] = '{rec.close}', [DayLow] = '{rec.close}', Volume = '{rec.volume}' Where Symbol = '{symbol}' And [Date] = '{rec.date}'";
+                            }
+                            else
+                            {
+                                sqlCommand =
+                                    $"Insert Into [ZacksRank] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.date}','{rec.high}','{rec.open}','{rec.close}', '{rec.low}', '{rec.volume}')";
+                            }
+
+                            ExecuteSqlCommand(sqlCommand);
+                        }
+
+                        header = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+
+                System.IO.File.Delete(path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            //}
+        }
+
+        private bool SymbolDateExist(string symbol, string date)
+        {
+            bool exists = false;
+            using (SqlCommand comm = new SqlCommand())
+            {
+                using (SqlConnection conn = new SqlConnection(cs))
+                {
+                    comm.CommandText =
+                        $"Select Count(1) From [ZacksRank] Where [Date] = '{Convert.ToDateTime(date).ToString("yyyy-MM-dd")}' And Symbol = '{symbol}'";
+                    comm.Connection = conn;
+                    conn.Open();
+                    exists = Convert.ToBoolean(comm.ExecuteScalar());
+                }
+            }
+
+            return exists;
+        }
+
+        private int ExecuteSqlCommand(string sqlCommand)
+        {
+            using (SqlCommand comm = new SqlCommand())
+            {
+                using (SqlConnection conn = new SqlConnection(cs))
+                {
+                    comm.CommandText = sqlCommand;
+                    comm.Connection = conn;
+                    conn.Open();
+                    return comm.ExecuteNonQuery();
+                }
+            }
+        }
     }
+
     public class DayHigh
     {
         //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
@@ -376,6 +510,9 @@ namespace Graph.Controllers
         public string PercentHighAboveOpen { get; set; }
         public string StdDev { get; set; }
         public string records { get; set; }
+
+        public string lastClose { get; set; }
+        public string avgVolume { get; set; }
         public string DHArray { get; set; }
 
         public string V100 { get; set; }
@@ -388,5 +525,17 @@ namespace Graph.Controllers
         public string V30 { get; set; }
         public string V20 { get; set; }
         public string V10 { get; set; }
+    }
+
+    public class record
+    {
+        //Date,Open,High,Low,Close,Adj Close, Volume
+        public string date { get; set; }
+        public string open { get; set; }
+        public string high { get; set; }
+        public string low { get; set; }
+        public string close { get; set; }
+        public string adjclose { get; set; }
+        public string volume { get; set; }
     }
 }
