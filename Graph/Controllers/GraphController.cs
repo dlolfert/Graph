@@ -380,7 +380,7 @@ namespace Graph.Controllers
             try
             {
                 var wr = WebRequest.Create(
-                    $"http://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1=1555601628&period2=1587224028&interval=1d&events=history");
+                    $"http://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1=1555984452&period2=1587606852&interval=1d&events=history");
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var resp = wr.GetResponse();
 
