@@ -154,8 +154,11 @@ namespace DA
         {
             try
             {
+                SettingsDA sda = new SettingsDA();
+                string p1 = sda.GetSetting("Period1");
+                string p2 = sda.GetSetting("Period2");
                 var wr = WebRequest.Create(
-                    $"http://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1=1555984452&period2=1587606852&interval=1d&events=history");
+                    $"http://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1={p1}&period2={p2}&interval=1d&events=history");
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var resp = wr.GetResponse();
 
