@@ -1,0 +1,12 @@
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DA.deps.json
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DA.dll
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DA.pdb
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DM.dll
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DM.pdb
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.csprojAssemblyReference.cache
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.csproj.CoreCompileInputs.cache
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.AssemblyInfoInputs.cache
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.AssemblyInfo.cs
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.csproj.CopyComplete
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.dll
+C:\Users\dlolf\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.pdb

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Graph.Models
+namespace DM
 {
     public class Ticker
     {

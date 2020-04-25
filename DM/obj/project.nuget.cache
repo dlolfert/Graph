@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "oVhzE980SHGEnyDnemxCfbkR49FkylYgBw9hA5Tg0c+BcIIzO5MksvPZG0l/fXOcfodji/ir6KNR6exNXaAftg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dlolf\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\dlolf\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

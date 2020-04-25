@@ -14,4 +14,10 @@
     <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\DA\DA.csproj" />
+    <ProjectReference Include="..\DM\DM.csproj" />
+  </ItemGroup>
+
 </Project>
