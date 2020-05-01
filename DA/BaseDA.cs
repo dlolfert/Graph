@@ -6,14 +6,14 @@ using System.Text;
 
 namespace DA
 {
-    public class BaseDA
+    public class BaseDa
     {
-        public string cs = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
+        public string Cs = "Server=NIXON,1466;Database=Barchart;User Id=sa;Password=@a88word";
         public int ExecuteSqlCommand(string sqlCommand)
         {
             using (SqlCommand comm = new SqlCommand())
             {
-                using (SqlConnection conn = new SqlConnection(cs))
+                using (SqlConnection conn = new SqlConnection(Cs))
                 {
                     comm.CommandText = sqlCommand;
                     comm.Connection = conn;
@@ -27,7 +27,7 @@ namespace DA
         {
             using (SqlCommand comm = new SqlCommand())
             {
-                using (SqlConnection conn = new SqlConnection(cs))
+                using (SqlConnection conn = new SqlConnection(Cs))
                 {
                     comm.CommandText = sqlCommand;
                     comm.Connection = conn;
@@ -41,7 +41,7 @@ namespace DA
         {
             using (SqlCommand comm = new SqlCommand())
             {
-                using (SqlConnection conn = new SqlConnection(cs))
+                using (SqlConnection conn = new SqlConnection(Cs))
                 {
                     comm.CommandText = command;
                     comm.Connection = conn;

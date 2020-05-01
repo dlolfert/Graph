@@ -1,14 +1,6 @@
-﻿using Graph.Models;
+﻿using DM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.IO;
-using System.Net;
-using Graph.Models;
-using DM;
 using DA;
 
 
@@ -16,8 +8,9 @@ namespace Graph.Controllers
 {
     public class GraphController : Controller
     {
-        DayHighDA dhda = new DayHighDA();
-        ZacksRankDA zr = new ZacksRankDA();
+        
+        DayHighDa dhda = new DA.DayHighDa();
+        ZacksRankDa zr = new ZacksRankDa();
 
         // GET: Graph
         public ActionResult Index()
@@ -45,7 +38,7 @@ namespace Graph.Controllers
             DayHigh dh = dhda.GetHeaderInfo(symbol);
             dhda.GetSumGrid(dh, symbol);
             //string average = GetDayHighAverage(symbol);
-            dh.DHArray = dhda.GetDayHighBySymbol(symbol);
+            dh.DhArray = dhda.GetDayHighBySymbol(symbol);
             return View("DayHigh", dh);
             //return View("DayHigh", GetDayHighBySymbol(symbol) + "***" + average);
         }

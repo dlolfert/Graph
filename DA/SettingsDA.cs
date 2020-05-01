@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DA
 {
-    class SettingsDA : BaseDA
+    public class SettingsDa : BaseDa
     {
         public string GetSetting(string key)
         {

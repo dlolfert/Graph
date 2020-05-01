@@ -9,7 +9,7 @@ using DM;
 namespace DA 
 {
     
-    public class DayHighDA : BaseDA
+    public class DayHighDa : BaseDa
     {
         public DayHigh GetHeaderInfo(string symbol)
         {
@@ -19,7 +19,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = cs;
+                    conn.ConnectionString = Cs;
                     comm.CommandText = "GetHeaderInfo";
                     comm.CommandType = System.Data.CommandType.StoredProcedure;
                     comm.Parameters.AddWithValue("Symbol", symbol);
@@ -29,9 +29,9 @@ namespace DA
                     SqlDataReader dr = comm.ExecuteReader();
                     dr.Read();
 
-                    dh.symbol = Convert.ToString(dr["Symbol"]);
-                    dh.name = Convert.ToString(dr["Name"]);
-                    dh.average = Convert.ToString(dr["Average"]);
+                    dh.Symbol = Convert.ToString(dr["Symbol"]);
+                    dh.Name = Convert.ToString(dr["Name"]);
+                    dh.Average = Convert.ToString(dr["Average"]);
                     dh.DaysAboveAvg = Convert.ToString(dr["DaysAboveAvg"]);
                     dh.PercentDaysAboveAvg = Convert.ToString(dr["% Days Above Average"]);
                     dh.DaysCloseAboveOpen = Convert.ToString(dr["DaysCloseAboveOpen"]);
@@ -39,10 +39,10 @@ namespace DA
                     dh.DaysHighAboveOpen = Convert.ToString(dr["DaysHighAboveOpen"]);
                     dh.PercentHighAboveOpen = Convert.ToString(dr["% Day High Above Open"]);
                     dh.StdDev = Convert.ToString(dr["StdDev"]);
-                    dh.records = Convert.ToString(dr["Records"]);
-                    dh.lastClose = Convert.ToString(dr["LastClose"]);
+                    dh.Records = Convert.ToString(dr["Records"]);
+                    dh.LastClose = Convert.ToString(dr["LastClose"]);
                     //Console.WriteLine($"{n:#,##0.0K}");
-                    dh.avgVolume = Convert.ToString($"{dr["avgVolume"]:###,###,###,###}");
+                    dh.AvgVolume = Convert.ToString($"{dr["avgVolume"]:###,###,###,###}");
                 }
             }
 
@@ -56,7 +56,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = cs;
+                    conn.ConnectionString = Cs;
                     comm.CommandText = "SumGrid";
                     comm.CommandType = System.Data.CommandType.StoredProcedure;
                     comm.Parameters.AddWithValue("Symbol", symbol);
@@ -90,7 +90,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = cs;
+                    conn.ConnectionString = Cs;
                     comm.CommandText = "SELECT " +
                                        "AVG(DayHigh - [Open]) " +
                                        "FROM[Barchart].[dbo].[ZacksRank] " +
@@ -120,7 +120,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = cs;
+                    conn.ConnectionString = Cs;
                     comm.CommandText = "SELECT " +
                                        "[Date], " +
                                        "CASE  " +
@@ -154,7 +154,7 @@ namespace DA
         {
             try
             {
-                SettingsDA sda = new SettingsDA();
+                SettingsDa sda = new SettingsDa();
                 string p1 = sda.GetSetting("Period1");
                 string p2 = sda.GetSetting("Period2");
                 var wr = WebRequest.Create(
@@ -198,24 +198,24 @@ namespace DA
                         if (!header)
                         {
                             var fields = line.Split(",".ToCharArray());
-                            record rec = new record();
-                            rec.date = fields[0];
-                            rec.open = fields[1];
-                            rec.high = fields[2];
-                            rec.low = fields[3];
-                            rec.close = fields[4];
-                            rec.adjclose = fields[5];
-                            rec.volume = fields[6];
+                            Record rec = new Record();
+                            rec.Date = fields[0];
+                            rec.Open = fields[1];
+                            rec.High = fields[2];
+                            rec.Low = fields[3];
+                            rec.Close = fields[4];
+                            rec.Adjclose = fields[5];
+                            rec.Volume = fields[6];
 
-                            if (SymbolDateExist(symbol, rec.date))
+                            if (SymbolDateExist(symbol, rec.Date))
                             {
                                 sqlCommand =
-                                    $"Update [ZacksRank] Set DayHigh = '{rec.high}', [Open] = '{rec.open}', [Close] = '{rec.close}', [DayLow] = '{rec.close}', Volume = '{rec.volume}' Where Symbol = '{symbol}' And [Date] = '{rec.date}'";
+                                    $"Update [ZacksRank] Set DayHigh = '{rec.High}', [Open] = '{rec.Open}', [Close] = '{rec.Close}', [DayLow] = '{rec.Close}', Volume = '{rec.Volume}' Where Symbol = '{symbol}' And [Date] = '{rec.Date}'";
                             }
                             else
                             {
                                 sqlCommand =
-                                    $"Insert Into [ZacksRank] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.date}','{rec.high}','{rec.open}','{rec.close}', '{rec.low}', '{rec.volume}')";
+                                    $"Insert Into [ZacksRank] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.Date}','{rec.High}','{rec.Open}','{rec.Close}', '{rec.Low}', '{rec.Volume}')";
                             }
 
                             ExecuteSqlCommand(sqlCommand);
@@ -244,7 +244,7 @@ namespace DA
             bool exists = false;
             using (SqlCommand comm = new SqlCommand())
             {
-                using (SqlConnection conn = new SqlConnection(cs))
+                using (SqlConnection conn = new SqlConnection(Cs))
                 {
                     comm.CommandText =
                         $"Select Count(1) From [ZacksRank] Where [Date] = '{Convert.ToDateTime(date).ToString("yyyy-MM-dd")}' And Symbol = '{symbol}'";

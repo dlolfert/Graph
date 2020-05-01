@@ -6,7 +6,7 @@ using DM;
 
 namespace DA
 {
-    public class ZacksRankDA : BaseDA
+    public class ZacksRankDa : BaseDa
     {
         public List<Ticker> GetSymbols()
         {
@@ -16,7 +16,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = cs;
+                    conn.ConnectionString = Cs;
                     //comm.CommandText = $"SELECT [Symbol], [Name] FROM [Barchart].[dbo].[Top100]";
 
                     var stmt =
@@ -70,7 +70,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = cs;
+                    conn.ConnectionString = Cs;
                     comm.CommandText = $"SELECT (Rank * -1) AS Rank, " +
                                        "CASE IsNull(Momentum, 'F') " +
                                        "WHEN 'F' THEN '1' " +
@@ -105,7 +105,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection())
                 {
-                    conn.ConnectionString = cs;
+                    conn.ConnectionString = Cs;
                     comm.CommandText =
                         $"SELECT TOP (1) [Rank], [Date] FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' Order by DATE DESC";
                     comm.Connection = conn;

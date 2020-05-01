@@ -3,8 +3,8 @@
     ViewData["Title"] = "DayHigh";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    string array = Model.DHArray;
-    string avg = Model.average;
+    string array = Model.DhArray;
+    string avg = Model.Average;
 }
     <script type="text/javascript">
     google.charts.load('current', {packages: ['corechart']});
@@ -44,19 +44,19 @@
 <h2>DayHigh</h2>
 <div>
     <table>
-        <tr><td>Name</td><td>@Model.name</td></tr>
-        <tr><td>Symbol</td><td>@Model.symbol</td></tr>
-        <tr><td>Average</td><td>@Model.average</td></tr>
+        <tr><td>Name</td><td>@Model.Name</td></tr>
+        <tr><td>Symbol</td><td>@Model.Symbol</td></tr>
+        <tr><td>Average</td><td>@Model.Average</td></tr>
         <tr><td># Days Above Avg</td><td>@Model.DaysAboveAvg</td></tr>
         <tr><td>Days Above Avg</td><td>@Model.PercentDaysAboveAvg%</td></tr>
         <tr><td># Days High Above Open</td><td>@Model.DaysHighAboveOpen</td></tr>
         <tr><td>Days High Above Open</td><td>@Model.PercentHighAboveOpen%</td></tr>
         <tr><td># Days Close Above Open</td><td>@Model.DaysCloseAboveOpen</td></tr>
         <tr><td>Days Close Above Open</td><td>@Model.PercentDaysCloseAboveOpen%</td></tr>
-        <tr><td># Records</td><td>@Model.records</td></tr>
+        <tr><td># Records</td><td>@Model.Records</td></tr>
         <tr><td>Standard Deviation</td><td>@Model.StdDev</td></tr>
-        <tr><td>Last Close</td><td>@Model.lastClose</td></tr>
-        <tr><td>Avg. Volume</td><td>@Model.avgVolume</td></tr>
+        <tr><td>Last Close</td><td>@Model.LastClose</td></tr>
+        <tr><td>Avg. Volume</td><td>@Model.AvgVolume</td></tr>
     </table>
 </div>
 <div>

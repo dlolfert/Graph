@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace DM
-{    public class record
+{    public class Record
     {
         //Date,Open,High,Low,Close,Adj Close, Volume
-        public string date { get; set; }
-        public string open { get; set; }
-        public string high { get; set; }
-        public string low { get; set; }
-        public string close { get; set; }
-        public string adjclose { get; set; }
-        public string volume { get; set; }
+        public string Date { get; set; }
+        public string Open { get; set; }
+        public string High { get; set; }
+        public string Low { get; set; }
+        public string Close { get; set; }
+        public string Adjclose { get; set; }
+        public string Volume { get; set; }
     }
 }
