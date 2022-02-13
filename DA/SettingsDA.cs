@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Net.Sockets;
 using System.Text;
@@ -16,7 +17,7 @@ namespace DA
 
         public void UpsertSetting(string key, string value)
         {
-            int found = ExecuteSqlCommand("Select Count(*) From settings Where [Key] = '{key}'");
+            var found = ExecuteScalar($"Select Count(*) From settings Where [Key] = '{key}'");
             if (Convert.ToBoolean(found))
             {
                 ExecuteSqlCommand($"Update settings set [Value] = '{value}' Where [Key] = '{key}'");
@@ -30,12 +31,23 @@ namespace DA
         public IDictionary<string,string> GetAllSettings()
         {
             IDictionary<string,string> dict = new Dictionary<string, string>();
-            SqlDataReader dr = ExecuteReader("Select * From settings");
-            while (dr.Read())
+ 
+            using (SqlCommand comm = new SqlCommand())
             {
-                dict.Add(dr["Key"].ToString(), dr["Value"].ToString());
-            }
+                using (SqlConnection conn = new SqlConnection(Cs))
+                {
+                    comm.CommandText = "Select * From settings";
+                    comm.Connection = conn;
 
+                    conn.Open();
+                    var dr = comm.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        dict.Add(dr["Key"].ToString(), dr["Value"].ToString());
+                    }
+                }
+            }
+            
             return dict;
         } 
     }

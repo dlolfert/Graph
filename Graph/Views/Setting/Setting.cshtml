@@ -9,9 +9,9 @@
 
 <h4>Setting</h4>
 <hr />
-<div class="row">
+<div class="row" style="border-style: solid; border-width: 1px; border-color: red;">
     <div class="col-md-4">
-        <form asp-action="View">
+        <form asp-action="AddUpdate" asp-controller="Setting">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Key" class="control-label"></label>
@@ -24,15 +24,17 @@
                 <span asp-validation-for="Value" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Add/Update" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<table>
+    @foreach (var x in Model.AllSettings)
+    {   
+        <tr><td>@x.Key</td><td>@x.Value</td></tr>
+    }
+</table>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

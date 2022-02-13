@@ -8,5 +8,6 @@ namespace DM
     {
         public string Key { get; set; }
         public string Value { get; set; }
+        public IDictionary<string,string> AllSettings { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace DA
                         while (dr.Read())
                         {
                             var t = new Ticker();
-                            t.Name = Convert.ToString(dr["Symbol"]);
+                            //t.Name = Convert.ToString(dr["Symbol"]);
                             t.Symbol = Convert.ToString(dr["Symbol"]);
                             t.Rank = Convert.ToString(dr["Rank"]);
                             t.Name = Convert.ToString(dr["Name"]);

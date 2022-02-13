@@ -1,18 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj": {}
+    "C:\\code\\Graph\\DM\\DM.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj": {
+    "C:\\code\\Graph\\DM\\DM.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
+        "projectUniqueName": "C:\\code\\Graph\\DM\\DM.csproj",
         "projectName": "DM",
-        "projectPath": "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
+        "projectPath": "C:\\code\\Graph\\DM\\DM.csproj",
         "packagesPath": "C:\\Users\\dlolf\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\obj\\",
+        "outputPath": "C:\\code\\Graph\\DM\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\dlolf\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -26,6 +29,7 @@
         },
         "frameworks": {
           "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
             "projectReferences": {}
           }
         },
@@ -37,7 +41,12 @@
       },
       "frameworks": {
         "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc.ViewFeatures": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
@@ -55,7 +64,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.405\\RuntimeIdentifierGraph.json"
         }
       }
     }
