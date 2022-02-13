@@ -29,7 +29,23 @@ namespace Graph.Controllers
                 var sda = new SettingsDa();
                 sda.UpsertSetting(setting.Key, setting.Value);
             }
-            
+
+            //Clear the Model.
+            ModelState.Clear();
+
+            var model = new DM.Setting();
+
+            model.AllSettings = new SettingsDa().GetAllSettings();
+            return View("Setting", model);
+        }
+        [Route("Setting/Delete/{Key}")]
+        public IActionResult Delete(string Key)
+        {
+            var sda = new SettingsDa();
+            sda.Delete(Key);
+
+            ModelState.Clear();
+
             var model = new DM.Setting();
 
             model.AllSettings = new SettingsDa().GetAllSettings();

@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Setting";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    System.Diagnostics.Debug.WriteLine("Key : " + @Model.Key);
+    System.Diagnostics.Debug.WriteLine("Value : " + @Model.Value);
 }
 
 <h1>View</h1>
@@ -32,7 +35,13 @@
 <table>
     @foreach (var x in Model.AllSettings)
     {   
-        <tr><td>@x.Key</td><td>@x.Value</td></tr>
+        <tr>
+            <td><a href='/Setting/Delete/@x.Key'>delete</a>
+            <td style="width: 20px;"></td>
+            <td>@x.Key</td>
+            <td style="width: 20px;"></td>
+            <td>@x.Value</td>
+        </tr>
     }
 </table>
 

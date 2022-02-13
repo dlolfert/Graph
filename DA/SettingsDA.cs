@@ -28,6 +28,11 @@ namespace DA
             }
         }
 
+        public void Delete(string Key)
+        {
+            ExecuteScalar($"Delete From Settings Where [Key] = '{Key}'");
+        }
+
         public IDictionary<string,string> GetAllSettings()
         {
             IDictionary<string,string> dict = new Dictionary<string, string>();
