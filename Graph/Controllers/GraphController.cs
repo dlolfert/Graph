@@ -1,4 +1,6 @@
-﻿using DM;
+﻿using System.Runtime.InteropServices;
+using System.Threading;
+using DM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DA;
@@ -35,12 +37,16 @@ namespace Graph.Controllers
         public ActionResult DayHigh(string symbol)
         {
             dhda.DownloadHistory(symbol);
+
+            FiveDayDA fdda = new FiveDayDA();
+            fdda.BuildData(symbol, -500);
+
             DayHigh dh = dhda.GetHeaderInfo(symbol);
             dhda.GetSumGrid(dh, symbol);
-            //string average = GetDayHighAverage(symbol);
+            
             dh.DhArray = dhda.GetDayHighBySymbol(symbol);
+            
             return View("DayHigh", dh);
-            //return View("DayHigh", GetDayHighBySymbol(symbol) + "***" + average);
         }
 
         // GET: Graph/Create
