@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[NewsFeed] (
+    [Headline]            NVARCHAR (MAX) NULL,
+    [Abstract]            NVARCHAR (MAX) NULL,
+    [Url]                 NVARCHAR (MAX) NULL,
+    [TimeStampUtc]        NVARCHAR (MAX) NULL,
+    [DocGuid]             NVARCHAR (MAX) NULL,
+    [ContentType]         NVARCHAR (MAX) NULL,
+    [Sequence]            NVARCHAR (MAX) NULL,
+    [MessageNumber]       NVARCHAR (MAX) NULL,
+    [EasternTimeOffset]   NVARCHAR (MAX) NULL,
+    [Author]              NVARCHAR (MAX) NULL,
+    [TickerType]          NVARCHAR (MAX) NULL,
+    [CountryCode]         NVARCHAR (MAX) NULL,
+    [Ticker]              NVARCHAR (MAX) NULL,
+    [Breaking]            NVARCHAR (MAX) NULL,
+    [SeoHeadlineFragment] NVARCHAR (MAX) NULL,
+    [ThirdPartyUrl]       NVARCHAR (MAX) NULL,
+    [Correction]          NVARCHAR (MAX) NULL,
+    [DocId]               NVARCHAR (MAX) NULL,
+    [ExternalId]          NVARCHAR (MAX) NULL,
+    [Revision]            NVARCHAR (MAX) NULL,
+    [Publication]         NVARCHAR (MAX) NULL,
+    [DocTypeId]           NVARCHAR (MAX) NULL,
+    [AssociatedImage]     NVARCHAR (MAX) NULL,
+    [Availability]        NVARCHAR (MAX) NULL,
+    [NewsMetaData]        NVARCHAR (MAX) NULL
+);
+

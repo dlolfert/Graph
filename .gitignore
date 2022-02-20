@@ -6,3 +6,7 @@
 /Graph/bin/Debug/netcoreapp2.1
 /Graph/obj
 *.user
+*.dacpac
+*.dll
+*.pdb
+/Barchart/obj/Debug

@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graph", "Graph\Graph.csproj", "{A242F6DA-BDBA-450D-B42C-05D71E4C01B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA", "DA\DA.csproj", "{B42488F4-CD56-4720-957B-173A9BB3F2C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA", "DA\DA.csproj", "{B42488F4-CD56-4720-957B-173A9BB3F2C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM", "DM\DM.csproj", "{85911617-E823-4401-85E1-94E599F4B728}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DM", "DM\DM.csproj", "{85911617-E823-4401-85E1-94E599F4B728}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Barchart", "Barchart\Barchart.sqlproj", "{53C5B7C5-3EA4-430F-A0D0-EB3B47BEAC58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,12 @@ Global
 		{85911617-E823-4401-85E1-94E599F4B728}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85911617-E823-4401-85E1-94E599F4B728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85911617-E823-4401-85E1-94E599F4B728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53C5B7C5-3EA4-430F-A0D0-EB3B47BEAC58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53C5B7C5-3EA4-430F-A0D0-EB3B47BEAC58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53C5B7C5-3EA4-430F-A0D0-EB3B47BEAC58}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{53C5B7C5-3EA4-430F-A0D0-EB3B47BEAC58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53C5B7C5-3EA4-430F-A0D0-EB3B47BEAC58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53C5B7C5-3EA4-430F-A0D0-EB3B47BEAC58}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
