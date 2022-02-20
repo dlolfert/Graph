@@ -94,7 +94,7 @@ namespace DA
                     comm.CommandText = "SELECT " +
                                        "AVG(DayHigh - [Open]) " +
                                        "FROM[Barchart].[dbo].[ZacksRank] " +
-                                       $"Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -100, [Date])";
+                                       $"Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -500, [Date])";
                     comm.Connection = conn;
                     conn.Open();
 
@@ -131,7 +131,7 @@ namespace DA
                                        "WHEN ([DayHigh] - [Open]) <= 0 THEN ([Open] - [Close]) " +
                                        "ELSE '0.00' " +
                                        "END AS DayLow " +
-                                       $"FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -100, GETDATE()) Order By Date DESC";
+                                       $"FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -500, GETDATE()) Order By Date DESC";
                     comm.Connection = conn;
                     conn.Open();
 
