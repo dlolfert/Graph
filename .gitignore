@@ -10,3 +10,4 @@
 *.dll
 *.pdb
 /Barchart/obj/Debug
+/Barchart/bin/Debug

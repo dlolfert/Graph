@@ -60,19 +60,8 @@ BEGIN
 		Select @FridayClose = [Close] From [Barchart].[dbo].[Yahoo] Where [Date] = DATEADD(DAY, -1, @Friday) And Symbol = @Symbol
 	 END
   
-	 IF ((Select Count(*) From [Barchart].[dbo].[WeeklyGain] Where Symbol = @Symbol and Monday = @Monday) > 0)
+	 IF ((Select Count(*) From [Barchart].[dbo].[WeeklyGain] Where Symbol = @Symbol and Monday = @Monday) < 1)
 	 BEGIN
-		Update [Barchart].[dbo].[WeeklyGain] Set 
-			MondayOpen = @MondayOpen, 
-			WeekHigh = @WeekHigh, 
-			[Percent] = CAST((((@MondayOpen * 100) / @WeekHigh) - 100) * -1 AS DECIMAL(11, 2)),
-			FridayClose = @FridayClose,
-			WeeklyPercent = CAST((((@MondayOpen * 100) / @FridayClose) - 100) * -1 AS DECIMAL(11, 2))
-			Where Symbol = @Symbol And Monday = @Monday
-	 END
-	 ELSE
-	 BEGIN
-		
 		Insert Into [Barchart].[dbo].[WeeklyGain] Values(
 			@Symbol, 
 			@Monday, 
@@ -81,14 +70,10 @@ BEGIN
 			CAST((((@MondayOpen * 100) / @WeekHigh) - 100) * -1 AS DECIMAL(11, 2)),
 			@FridayClose,
 			CAST((((@MondayOpen * 100) / @FridayClose) - 100) * -1 AS DECIMAL(11, 2)))
-
 	 END
 
 	 SET @Start = DATEADD(DAY, 7, @Monday)
 
  END
- --Select * From [Barchart].[dbo].[Yahoo] Where ([Date] >= @Monday And [Date] <= @Friday) And Symbol = @Symbol Order By [Date] 
-
-
-
+ 
 END
