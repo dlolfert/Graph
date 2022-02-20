@@ -93,7 +93,7 @@ namespace DA
                     conn.ConnectionString = Cs;
                     comm.CommandText = "SELECT " +
                                        "AVG(DayHigh - [Open]) " +
-                                       "FROM[Barchart].[dbo].[ZacksRank] " +
+                                       "FROM[Barchart].[dbo].[Yahoo] " +
                                        $"Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -500, [Date])";
                     comm.Connection = conn;
                     conn.Open();
@@ -131,7 +131,7 @@ namespace DA
                                        "WHEN ([DayHigh] - [Open]) <= 0 THEN ([Open] - [Close]) " +
                                        "ELSE '0.00' " +
                                        "END AS DayLow " +
-                                       $"FROM [Barchart].[dbo].[ZacksRank] Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -500, GETDATE()) Order By Date DESC";
+                                       $"FROM [Barchart].[dbo].[Yahoo] Where Symbol = '{symbol}' And [DATE] >= DATEADD(DAY, -500, GETDATE()) Order By Date DESC";
                     comm.Connection = conn;
                     conn.Open();
 
@@ -210,12 +210,12 @@ namespace DA
                             if (SymbolDateExist(symbol, rec.Date))
                             {
                                 sqlCommand =
-                                    $"Update [ZacksRank] Set DayHigh = '{rec.High}', [Open] = '{rec.Open}', [Close] = '{rec.Close}', [DayLow] = '{rec.Close}', Volume = '{rec.Volume}' Where Symbol = '{symbol}' And [Date] = '{rec.Date}'";
+                                    $"Update [Yahoo] Set DayHigh = '{rec.High}', [Open] = '{rec.Open}', [Close] = '{rec.Close}', [DayLow] = '{rec.Close}', Volume = '{rec.Volume}' Where Symbol = '{symbol}' And [Date] = '{rec.Date}'";
                             }
                             else
                             {
                                 sqlCommand =
-                                    $"Insert Into [ZacksRank] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.Date}','{rec.High}','{rec.Open}','{rec.Close}', '{rec.Low}', '{rec.Volume}')";
+                                    $"Insert Into [Yahoo] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.Date}','{rec.High}','{rec.Open}','{rec.Close}', '{rec.Low}', '{rec.Volume}')";
                             }
 
                             ExecuteSqlCommand(sqlCommand);
@@ -247,7 +247,7 @@ namespace DA
                 using (SqlConnection conn = new SqlConnection(Cs))
                 {
                     comm.CommandText =
-                        $"Select Count(1) From [ZacksRank] Where [Date] = '{Convert.ToDateTime(date).ToString("yyyy-MM-dd")}' And Symbol = '{symbol}'";
+                        $"Select Count(1) From [Yahoo] Where [Date] = '{Convert.ToDateTime(date).ToString("yyyy-MM-dd")}' And Symbol = '{symbol}'";
                     comm.Connection = conn;
                     conn.Open();
                     exists = Convert.ToBoolean(comm.ExecuteScalar());
