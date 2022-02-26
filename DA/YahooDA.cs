@@ -26,11 +26,22 @@ namespace DA
 
         public List<string> GetDistinctSymbolList()
         {
-            List<string> symbols = new List<string>();
-            var dr = ExecuteReader("Select Distinct Symbol From ZacksRank");
-            while (dr.Read())
+            var symbols = new List<string>();
+            using (SqlCommand comm = new SqlCommand())
             {
-                symbols.Add(dr["Symbol"].ToString());
+                using (SqlConnection conn = new SqlConnection(this.Cs))
+                {
+                    comm.CommandText = "SELECT Distinct Symbol FROM [Barchart].[dbo].[ZacksRank]";
+                    comm.Connection = conn;
+                    conn.Open();
+
+                    var dr = comm.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        symbols.Add(Convert.ToString(dr["Symbol"]));
+                    }
+
+                }
             }
 
             return symbols;

@@ -37,19 +37,19 @@ namespace DA
             }
         }
 
-        public SqlDataReader ExecuteReader(string command)
-        {
-            using (SqlCommand comm = new SqlCommand())
-            {
-                using (SqlConnection conn = new SqlConnection(Cs))
-                {
-                    comm.CommandText = command;
-                    comm.Connection = conn;
+        //public SqlDataReader ExecuteReader(string command)
+        //{
+        //    using (SqlCommand comm = new SqlCommand())
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(Cs))
+        //        {
+        //            comm.CommandText = command;
+        //            comm.Connection = conn;
                     
-                    conn.Open();
-                    return comm.ExecuteReader(CommandBehavior.CloseConnection);
-                }
-            }
-        }
+        //            conn.Open();
+        //            return comm.ExecuteReader(CommandBehavior.CloseConnection);
+        //        }
+        //    }
+        //}
     }
 }
