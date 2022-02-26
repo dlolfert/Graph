@@ -39,7 +39,7 @@ namespace Graph.Controllers
             dhda.DownloadHistory(symbol);
 
             FiveDayDA fdda = new FiveDayDA();
-            fdda.BuildData(symbol, -500);
+            fdda.BuildData(symbol, -100);
 
             DayHigh dh = dhda.GetHeaderInfo(symbol);
             dhda.GetSumGrid(dh, symbol);

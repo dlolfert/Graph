@@ -11,3 +11,5 @@
 *.pdb
 /Barchart/obj/Debug
 /Barchart/bin/Debug
+/Barchart/Barchart.dbmdl
+/Barchart/Barchart.jfm
