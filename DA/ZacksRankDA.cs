@@ -19,24 +19,18 @@ namespace DA
                     conn.ConnectionString = Cs;
                     //comm.CommandText = $"SELECT [Symbol], [Name] FROM [Barchart].[dbo].[Top100]";
 
-                    var stmt =
+                    var stmt = "Select Symbol, Name From Top100 Order By Symbol";
+                        
                         //"WITH cte AS " +
-                        //   "( " +
-                        //   "SELECT *, " +
-                        //   "ROW_NUMBER() OVER (PARTITION BY Symbol ORDER BY Date DESC) AS rn " +
-                        //   "FROM ZacksRank " +
-                        //   ") Select * from cte where rn = 1";
+                        //"( " +
+                        //"    SELECT *, " +
+                        //"    ROW_NUMBER() OVER(PARTITION BY Symbol ORDER BY Date DESC) AS rn " +
+                        //"FROM ZacksRank " +
+                        //"), " +
+                        //"Name AS(Select[Name], [Symbol] From Top100) " +
+                        //"Select CTE.[Symbol], Name.[Name], CTE.[Rank], CTE.[Date] from cte Inner Join Name on CTE.Symbol = Name.Symbol Where rn = 1";
 
-                        "WITH cte AS " +
-                        "( " +
-                        "    SELECT *, " +
-                        "    ROW_NUMBER() OVER(PARTITION BY Symbol ORDER BY Date DESC) AS rn " +
-                        "FROM ZacksRank " +
-                        "), " +
-                        "Name AS(Select[Name], [Symbol] From Top100) " +
-                        "Select CTE.[Symbol], Name.[Name], CTE.[Rank], CTE.[Date] from cte Inner Join Name on CTE.Symbol = Name.Symbol Where rn = 1";
-
-
+                    
 
 
                     comm.CommandText = stmt;
@@ -50,9 +44,8 @@ namespace DA
                         while (dr.Read())
                         {
                             var t = new Ticker();
-                            //t.Name = Convert.ToString(dr["Symbol"]);
                             t.Symbol = Convert.ToString(dr["Symbol"]);
-                            t.Rank = Convert.ToString(dr["Rank"]);
+                            t.Rank = Convert.ToString("F");
                             t.Name = Convert.ToString(dr["Name"]);
                             tickers.Add(t);
                         }

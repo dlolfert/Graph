@@ -166,8 +166,8 @@ namespace DA
 
 
 
-                System.IO.File.AppendAllText($"C:\\Users\\dlolf\\Downloads\\{symbol}.csv", sr.ReadToEnd());
-                UploadData($"C:\\Users\\dlolf\\Downloads\\{symbol}.csv", symbol);
+                System.IO.File.AppendAllText($"C:\\temp\\{symbol}.csv", sr.ReadToEnd());
+                UploadData($"C:\\temp\\{symbol}.csv", symbol);
                 //Microsoft.VisualBasic.FileSystem.Rename($"C:\\Users\\dlolf\\Downloads\\{symbol}.csvx", $"C:\\Users\\dlolf\\Downloads\\{symbol}.csv");
 
             }

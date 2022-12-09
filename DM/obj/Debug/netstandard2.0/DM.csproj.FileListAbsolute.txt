@@ -16,3 +16,13 @@ C:\code\Graph\DM\obj\Debug\netstandard2.0\DM.AssemblyInfo.cs
 C:\code\Graph\DM\obj\Debug\netstandard2.0\DM.csproj.CoreCompileInputs.cache
 C:\code\Graph\DM\obj\Debug\netstandard2.0\DM.dll
 C:\code\Graph\DM\obj\Debug\netstandard2.0\DM.pdb
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.deps.json
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.dll
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.pdb
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.csproj.AssemblyReference.cache
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.AssemblyInfoInputs.cache
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.AssemblyInfo.cs
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.csproj.CoreCompileInputs.cache
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.dll
+C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.pdb

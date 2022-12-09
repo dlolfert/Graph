@@ -8,6 +8,7 @@
     System.Diagnostics.Debug.WriteLine("Value : " + @Model.Value);
 }
 
+
 <h1>View</h1>
 
 <h4>Setting</h4>
@@ -32,13 +33,19 @@
         </form>
     </div>
 </div>
+<script language="text/javascript">
+    function fillInKeyName(name)
+    {
+            document.forms[0].Key.value = name;
+    }
+</script>
 <table>
     @foreach (var x in Model.AllSettings)
     {   
         <tr>
             <td><a href='/Setting/Delete/@x.Key'>delete</a>
             <td style="width: 20px;"></td>
-            <td>@x.Key</td>
+            <td onclick="javascript:document.forms[0].Key.value = '@x.Key'" onmouseover="" style="cursor: pointer;"><u>@x.Key</u></td>
             <td style="width: 20px;"></td>
             <td>@x.Value</td>
         </tr>

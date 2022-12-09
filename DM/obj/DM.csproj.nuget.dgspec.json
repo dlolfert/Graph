@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\code\\Graph\\DM\\DM.csproj": {}
+    "C:\\Users\\dolfert\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj": {}
   },
   "projects": {
-    "C:\\code\\Graph\\DM\\DM.csproj": {
+    "C:\\Users\\dolfert\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\code\\Graph\\DM\\DM.csproj",
+        "projectUniqueName": "C:\\Users\\dolfert\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
         "projectName": "DM",
-        "projectPath": "C:\\code\\Graph\\DM\\DM.csproj",
-        "packagesPath": "C:\\Users\\dlolf\\.nuget\\packages\\",
-        "outputPath": "C:\\code\\Graph\\DM\\obj\\",
+        "projectPath": "C:\\Users\\dolfert\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
+        "packagesPath": "C:\\Users\\dolfert\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dolfert\\source\\repos\\dlolfert\\Graph\\DM\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\dlolf\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dolfert\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -60,11 +57,12 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.405\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

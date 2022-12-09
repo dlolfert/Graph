@@ -23,3 +23,16 @@ C:\code\Graph\DA\obj\Debug\netstandard2.0\DA.csproj.CoreCompileInputs.cache
 C:\code\Graph\DA\obj\Debug\netstandard2.0\DA.csproj.CopyComplete
 C:\code\Graph\DA\obj\Debug\netstandard2.0\DA.dll
 C:\code\Graph\DA\obj\Debug\netstandard2.0\DA.pdb
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DA.deps.json
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DA.dll
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DA.pdb
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DM.dll
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\bin\Debug\netstandard2.0\DM.pdb
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.csproj.AssemblyReference.cache
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.AssemblyInfoInputs.cache
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.AssemblyInfo.cs
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.csproj.CoreCompileInputs.cache
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.csproj.CopyComplete
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.dll
+C:\Users\dolfert\source\repos\dlolfert\Graph\DA\obj\Debug\netstandard2.0\DA.pdb
