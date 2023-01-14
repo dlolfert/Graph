@@ -4,13 +4,18 @@ using System.Text;
 using System.Data.SqlClient;
 using System.IO;
 using System.Net;
+using System.Net.Cache;
+using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using DM;
 
-namespace DA 
+namespace DA
 {
-    
+
     public class DayHighDa : BaseDa
     {
+        public static DateTime LastPeriodUpdateTime = DateTime.Now.AddDays(-10);
+
         public DayHigh GetHeaderInfo(string symbol)
         {
             DayHigh dh = new DayHigh();
@@ -150,13 +155,48 @@ namespace DA
             if (json.LastIndexOf(',') > 0) json = json.Substring(0, json.LastIndexOf(','));
             return json += "]";
         }
+
+        public void RetreivePeriods()
+        {
+            var Epoch = Convert.ToDateTime("1970-01-01");
+            
+            var epochTicks = Epoch.Ticks;
+            var today = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
+            today = today.AddHours(16);
+            today = today.AddSeconds(805);
+
+            var yearAgo = today.AddYears(-1);
+            
+
+            var todayTicks = today.Ticks;
+            var yearAgoTicks = yearAgo.Ticks;
+
+            var todayTicksFromEpoch = todayTicks - epochTicks;
+            var yearAgoTicksFromEpoch = yearAgoTicks - epochTicks;
+
+            var todaySecondsFromEpoch = todayTicksFromEpoch / 10000000;
+            var yearAgoSecondsFromEpoch = yearAgoTicksFromEpoch / 10000000;
+
+
+
+            SettingsDa settingsDa = new SettingsDa();
+            settingsDa.UpsertSetting("period1", Convert.ToString(yearAgoSecondsFromEpoch));
+            settingsDa.UpsertSetting("period2", Convert.ToString(todaySecondsFromEpoch));
+
+            // LastPeriodUpdateTime = DateTime.Now;
+            //}
+        }
+
         public void DownloadHistory(string symbol)
         {
+            RetreivePeriods();
+
             try
             {
                 SettingsDa sda = new SettingsDa();
                 string p1 = sda.GetSetting("Period1");
                 string p2 = sda.GetSetting("Period2");
+
                 var wr = WebRequest.Create(
                     $"http://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1={p1}&period2={p2}&interval=1d&events=history");
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -164,10 +204,8 @@ namespace DA
 
                 var sr = new StreamReader(resp.GetResponseStream());
 
-
-
-                System.IO.File.AppendAllText($"C:\\temp\\{symbol}.csv", sr.ReadToEnd());
-                UploadData($"C:\\temp\\{symbol}.csv", symbol);
+                //System.IO.File.AppendAllText($"C:\\temp\\{symbol}.csv", sr.ReadToEnd());
+                UploadData(sr.ReadToEnd(), symbol);
                 //Microsoft.VisualBasic.FileSystem.Rename($"C:\\Users\\dlolf\\Downloads\\{symbol}.csvx", $"C:\\Users\\dlolf\\Downloads\\{symbol}.csv");
 
             }
@@ -177,7 +215,20 @@ namespace DA
             }
         }
 
-        public void UploadData(string path, string symbol)
+        public void DownloadSummary(string symbol)
+        {
+            //string url = $"https://finance.yahoo.com/quote/{symbol}";
+            string url = $"https://www.barchart.com/stocks/quotes/{symbol}";
+            var wr = WebRequest.Create(url);
+            var response = wr.GetResponse();
+
+            var strResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+            System.IO.File.AppendAllText($"C:\\Temp\\{symbol}.txt", strResponse);
+        }
+
+
+        public void UploadData(string data, string symbol)
         {
             string sqlCommand = string.Empty;
 
@@ -188,7 +239,7 @@ namespace DA
             {
 
 
-                var lines = System.IO.File.ReadAllLines(path);
+                var lines = data.Split('\n');
 
                 bool header = true;
                 foreach (var line in lines)
@@ -229,7 +280,7 @@ namespace DA
                     }
                 }
 
-                System.IO.File.Delete(path);
+                //System.IO.File.Delete(path);
             }
             catch (Exception ex)
             {

@@ -39,6 +39,9 @@ namespace Graph.Controllers
 
             // Get Graph Data...
             dhda.DownloadHistory(symbol);
+            
+            dhda.DownloadSummary(symbol);
+
 
             DayHigh dh = dhda.GetHeaderInfo(symbol);
             dhda.GetSumGrid(dh, symbol);
