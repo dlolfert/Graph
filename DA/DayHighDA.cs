@@ -8,6 +8,12 @@ using System.Net.Cache;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using DM;
+using ServiceStack.Text;
+using ServiceStack.Text.Json;
+using ServiceStack.Extensions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.NetworkInformation;
 
 namespace DA
 {
@@ -217,14 +223,57 @@ namespace DA
 
         public void DownloadSummary(string symbol)
         {
-            //string url = $"https://finance.yahoo.com/quote/{symbol}";
-            string url = $"https://www.barchart.com/stocks/quotes/{symbol}";
-            var wr = WebRequest.Create(url);
-            var response = wr.GetResponse();
+            string strResponse = string.Empty;
 
-            var strResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            try
+            {
+                string url = $"https://api.polygon.io/v3/reference/tickers?ticker={symbol}&type=CS&active=true&apiKey=RaYykPoInrSUBjOV582kC4zI_mhXpJxq";
 
-            System.IO.File.AppendAllText($"C:\\Temp\\{symbol}.txt", strResponse);
+                var wr2 = WebRequest.Create($"https://www.zacks.com/stock/quote/{symbol}");
+                var zacks = wr2.GetResponse();
+                System.IO.File.WriteAllText($@"C:\Temp\Zacks_{symbol}.txt", new StreamReader(zacks.GetResponseStream()).ReadToEnd());
+
+
+                var wr = WebRequest.Create(url);
+
+                var response = wr.GetResponse();
+
+                strResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                dynamic obj = JsonConvert.DeserializeObject<dynamic>(strResponse);
+
+                var name = obj.results[0]["name"].Value.ToString().Replace("'", "^");
+
+                var command = $"Select [Name] From [Barchart].[dbo].[Top100] Where Symbol = '{symbol}' " +
+                              "IF(@@ROWCOUNT > 0) " +
+                              "BEGIN " +
+                              $"Update [Barchart].[dbo].[Top100] Set [Name] = '{name}' Where Symbol = '{symbol}' " +
+                              "END " +
+                              "ELSE " +
+                              "BEGIN " +
+                              $"INSERT INTO [Barchart].[dbo].[Top100] (Symbol, [Name], [Date]) Values('{name}', '{symbol}', GETDATE()) " +
+                              "END";
+
+                using (SqlCommand comm = new SqlCommand())
+                {
+                    using (SqlConnection conn = new SqlConnection(Cs))
+                    {
+                        comm.CommandText = command;
+                        comm.Connection = conn;
+
+                        conn.Open();
+
+                        comm.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                //throw;
+            }
+            
+            System.IO.File.WriteAllText($"C:\\Temp\\{symbol}.txt", strResponse);
         }
 
 

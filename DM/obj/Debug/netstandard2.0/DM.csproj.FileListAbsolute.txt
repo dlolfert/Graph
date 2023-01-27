@@ -1,11 +1,3 @@
-C:\Users\dlolf\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.deps.json
-C:\Users\dlolf\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.dll
-C:\Users\dlolf\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.pdb
-C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.csproj.CoreCompileInputs.cache
-C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.AssemblyInfoInputs.cache
-C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.AssemblyInfo.cs
-C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.dll
-C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.pdb
 C:\code\Graph\DM\bin\Debug\netstandard2.0\DM.deps.json
 C:\code\Graph\DM\bin\Debug\netstandard2.0\DM.dll
 C:\code\Graph\DM\bin\Debug\netstandard2.0\DM.pdb
@@ -26,3 +18,13 @@ C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.Asse
 C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.csproj.CoreCompileInputs.cache
 C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.dll
 C:\Users\dolfert\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.pdb
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.deps.json
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.dll
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\bin\Debug\netstandard2.0\DM.pdb
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.csproj.AssemblyReference.cache
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.AssemblyInfoInputs.cache
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.AssemblyInfo.cs
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.csproj.CoreCompileInputs.cache
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.dll
+C:\Users\dlolf\source\repos\dlolfert\Graph\DM\obj\Debug\netstandard2.0\DM.pdb

@@ -4488,19 +4488,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\dolfert\\.nuget\\packages\\": {}
+    "C:\\Users\\dlolf\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dolfert\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
+      "projectUniqueName": "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
       "projectName": "DM",
-      "projectPath": "C:\\Users\\dolfert\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
-      "packagesPath": "C:\\Users\\dolfert\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dolfert\\source\\repos\\dlolfert\\Graph\\DM\\obj\\",
+      "projectPath": "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
+      "packagesPath": "C:\\Users\\dlolf\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dlolf\\Source\\Repos\\dlolfert\\Graph\\DM\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\dolfert\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dlolf\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4548,7 +4548,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }
