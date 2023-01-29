@@ -227,11 +227,12 @@ namespace DA
 
             try
             {
-                string url = $"https://api.polygon.io/v3/reference/tickers?ticker={symbol}&type=CS&active=true&apiKey=RaYykPoInrSUBjOV582kC4zI_mhXpJxq";
-
-                var wr2 = WebRequest.Create($"https://www.zacks.com/stock/quote/{symbol}");
-                var zacks = wr2.GetResponse();
-                System.IO.File.WriteAllText($@"C:\Temp\Zacks_{symbol}.txt", new StreamReader(zacks.GetResponseStream()).ReadToEnd());
+                string url = $"https://api.polygon.io/v3/reference/tickers/{symbol}?apiKey=RaYykPoInrSUBjOV582kC4zI_mhXpJxq";
+                //https://api.polygon.io/v3/reference/tickers/QYLD?apiKey=RaYykPoInrSUBjOV582kC4zI_mhXpJxq
+            
+                //var wr2 = WebRequest.Create($"https://www.zacks.com/stock/quote/{symbol}");
+                //var zacks = wr2.GetResponse();
+                //System.IO.File.WriteAllText($@"C:\Temp\Zacks_{symbol}.txt", new StreamReader(zacks.GetResponseStream()).ReadToEnd());
 
 
                 var wr = WebRequest.Create(url);
@@ -242,7 +243,7 @@ namespace DA
 
                 dynamic obj = JsonConvert.DeserializeObject<dynamic>(strResponse);
 
-                var name = obj.results[0]["name"].Value.ToString().Replace("'", "^");
+                var name = obj.results.name.Value.ToString().Replace("'", "^");
 
                 var command = $"Select [Name] From [Barchart].[dbo].[Top100] Where Symbol = '{symbol}' " +
                               "IF(@@ROWCOUNT > 0) " +
