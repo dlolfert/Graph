@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
@@ -252,7 +253,7 @@ namespace DA
                               "END " +
                               "ELSE " +
                               "BEGIN " +
-                              $"INSERT INTO [Barchart].[dbo].[Top100] (Symbol, [Name], [Date]) Values('{name}', '{symbol}', GETDATE()) " +
+                              $"INSERT INTO [Barchart].[dbo].[Top100] ([Name], Symbol, [Date]) Values('{name}', '{symbol}', GETDATE()) " +
                               "END";
 
                 using (SqlCommand comm = new SqlCommand())
@@ -280,7 +281,7 @@ namespace DA
 
         public void UploadData(string data, string symbol)
         {
-            string sqlCommand = string.Empty;
+            StringBuilder sqlCommand = new StringBuilder();
 
             //string[] files = Directory.GetFiles(@"C:\Users\dlolf\Downloads", "*.csv");
             //foreach (var file in files)
@@ -308,18 +309,24 @@ namespace DA
                             rec.Adjclose = fields[5];
                             rec.Volume = fields[6];
 
-                            if (SymbolDateExist(symbol, rec.Date))
-                            {
-                                sqlCommand =
-                                    $"Update [Yahoo] Set DayHigh = '{rec.High}', [Open] = '{rec.Open}', [Close] = '{rec.Close}', [DayLow] = '{rec.Close}', Volume = '{rec.Volume}' Where Symbol = '{symbol}' And [Date] = '{rec.Date}'";
-                            }
-                            else
-                            {
-                                sqlCommand =
-                                    $"Insert Into [Yahoo] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.Date}','{rec.High}','{rec.Open}','{rec.Close}', '{rec.Low}', '{rec.Volume}')";
-                            }
+                            string comm =
+                                $"If NOT EXISTS (Select * From Yahoo Where Symbol = '{symbol}' and [Date] = '{ Convert.ToDateTime(rec.Date).ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) }') " +
+                                "BEGIN " +
+                                $"Insert Into [Yahoo] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.Date}','{rec.High}','{rec.Open}','{rec.Close}', '{rec.Low}', '{rec.Volume}') " +
+                                "END; "; 
 
-                            ExecuteSqlCommand(sqlCommand);
+                            sqlCommand.Append(comm);
+
+                            //if (SymbolDateExist(symbol, rec.Date))
+                            //{
+                            //    sqlCommand =
+                            //        $"Update [Yahoo] Set DayHigh = '{rec.High}', [Open] = '{rec.Open}', [Close] = '{rec.Close}', [DayLow] = '{rec.Close}', Volume = '{rec.Volume}' Where Symbol = '{symbol}' And [Date] = '{rec.Date}'";
+                            //}
+                            //else
+                            //{
+                            //    sqlCommand =
+                            //        $"Insert Into [Yahoo] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.Date}','{rec.High}','{rec.Open}','{rec.Close}', '{rec.Low}', '{rec.Volume}')";
+                            //}
                         }
 
                         header = false;
@@ -329,6 +336,9 @@ namespace DA
                         Console.WriteLine(ex.Message);
                     }
                 }
+
+                ExecuteSqlCommand(sqlCommand.ToString());
+
 
                 //System.IO.File.Delete(path);
             }

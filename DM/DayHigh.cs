@@ -23,6 +23,8 @@ namespace DM
         public string StdDev { get; set; }
         public string Records { get; set; }
 
+        public string ErrorMessage { get; set; }
+
         public string LastClose { get; set; }
         public string AvgVolume { get; set; }
         public string DhArray { get; set; }

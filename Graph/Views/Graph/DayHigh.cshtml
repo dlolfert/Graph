@@ -24,24 +24,14 @@
         var options = {
             colors: ['green', 'red']
         };
-        /*
-         var options = {
-        hAxis: {
-          title: 'Time'
-        },
-        vAxis: {
-          title: 'Popularity'
-        }
-      };
- 
-         */
-
-
-        //alert(chart);
+        
         chart.draw(data, options);
     }
     </script>
 <h2>DayHigh</h2>
+
+<div style="color: red;">@Model.ErrorMessage</div>
+
 <div>
     <table>
         <tr><td>Name</td><td>@Model.Name</td></tr>

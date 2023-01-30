@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using DA;
 using System.Collections.Generic;
 using System;
+using System.Globalization;
 using Graph.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -35,21 +36,29 @@ namespace Graph.Controllers
         [HttpGet]
         public ViewResult GetTickerData()
         {
+            var tickerViewModel = new TickerViewModel();
+            DayHigh dh = new DayHigh();
+
             var symbol = Request.QueryString.Value.Split('=')[1];
 
-            // Get Graph Data...
-            dhda.DownloadHistory(symbol);
+            try
+            {
+                //// Get Graph Data...
+                dhda.DownloadHistory(symbol);
+                dhda.DownloadSummary(symbol);
+                
+                dh = dhda.GetHeaderInfo(symbol);
+                dhda.GetSumGrid(dh, symbol);
+
+                dh.DhArray = dhda.GetDayHighBySymbol(symbol);
+                
+                tickerViewModel.TickerList = buildSelectDropDownList(symbol);
+            }
+            catch (Exception e)
+            {
+                dh.ErrorMessage = e.Message;
+            }
             
-            dhda.DownloadSummary(symbol);
-
-
-            DayHigh dh = dhda.GetHeaderInfo(symbol);
-            dhda.GetSumGrid(dh, symbol);
-
-            dh.DhArray = dhda.GetDayHighBySymbol(symbol);
-
-            var tickerViewModel = new TickerViewModel();
-            tickerViewModel.TickerList = buildSelectDropDownList(symbol);
             tickerViewModel.GraphData = dh;
 
             return View("Ticker", tickerViewModel);
@@ -86,88 +95,6 @@ namespace Graph.Controllers
             return View("Details", zr.GetRankBySymbol(symbol));
         }
 
-        [Route("Graph/DayHigh/{symbol}")]
-        public ActionResult DayHigh(string symbol)
-        {
-            symbol = symbol.ToUpper();
-
-            dhda.DownloadHistory(symbol);
-            
-            DayHigh dh = dhda.GetHeaderInfo(symbol);
-            dhda.GetSumGrid(dh, symbol);
-            
-            dh.DhArray = dhda.GetDayHighBySymbol(symbol);
-            
-            return View("DayHigh", dh);
-        }
-
-        // GET: Graph/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        // POST: Graph/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add insert logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        // GET: Graph/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        // POST: Graph/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        // GET: Graph/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        // POST: Graph/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+       
     }
 }
