@@ -3,14 +3,14 @@
 ################################################################################
 
 /.vs
-/Graph/bin/Debug/netcoreapp2.1
-/Graph/obj
 *.user
 *.dacpac
-*.dll
 *.pdb
-/Barchart/obj/Debug
-/Barchart/bin/Debug
+*.cache
 /Barchart/Barchart.dbmdl
 /Barchart/Barchart.jfm
-/DA/bin/Debug/netstandard2.0/DA.dll
+*/bin/Debug/*
+*/obj/Debug/*
+*/obj/*
+/DA/obj/Debug/netstandard2.0/DA.csproj.AssemblyReference.cache
+/JobController/obj/Debug/net7.0/JobController.csproj.AssemblyReference.cache
