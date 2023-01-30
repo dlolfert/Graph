@@ -9,8 +9,7 @@
 *.cache
 /Barchart/Barchart.dbmdl
 /Barchart/Barchart.jfm
-*/bin/Debug/*
-*/obj/Debug/*
-*/obj/*
-/DA/obj/Debug/netstandard2.0/DA.csproj.AssemblyReference.cache
-/JobController/obj/Debug/net7.0/JobController.csproj.AssemblyReference.cache
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
