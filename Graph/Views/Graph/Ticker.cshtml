@@ -5,11 +5,13 @@
     ViewData["Title"] = "Ticker";
 
     string array = Model.GraphData.DhArray;
-    string avg = Model.GraphData.Average;
+    string tradeArray = Model.GraphData.TradeData;
+    
 }
 <script type="text/javascript">
     google.charts.load('current', { packages: ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawTradeDataChart);
 
     function drawChart() {
         // Define the chart to be drawn.
@@ -26,6 +28,24 @@
             colors: ['green', 'red']
         };
                        
+        chart.draw(data, options);
+    }
+    
+    function drawTradeDataChart()
+    {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Cost');
+        data.addColumn('number', 'Profit');
+        data.addRows(@Html.Raw(tradeArray));
+        
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.LineChart(document.getElementById('TradeData'));
+
+        var options = {
+            colors: ['red', 'green']
+        };
+
         chart.draw(data, options);
     }
 </script>
@@ -60,38 +80,13 @@
         <tr><td>Avg. Volume</td><td>@Model.GraphData.AvgVolume</td></tr>
     </table>
 </div>
-<div>
-    <div id="DayHigh"></div>
-</div>
-
     <div>
-        <table cellpadding="3" cellspacing="0" border="1" style="border-color:black;">
-            <tr>
-                <td>100</td>
-                <td>90</td>
-                <td>80</td>
-                <td>70</td>
-                <td>60</td>
-                <td>50</td>
-                <td>40</td>
-                <td>30</td>
-                <td>20</td>
-                <td>10</td>
-            </tr>
-            <tr>
-                <td>@Model.GraphData.V100</td>
-                <td>@Model.GraphData.V90</td>
-                <td>@Model.GraphData.V80</td>
-                <td>@Model.GraphData.V70</td>
-                <td>@Model.GraphData.V60</td>
-                <td>@Model.GraphData.V50</td>
-                <td>@Model.GraphData.V40</td>
-                <td>@Model.GraphData.V30</td>
-                <td>@Model.GraphData.V20</td>
-                <td>@Model.GraphData.V10</td>
-            </tr>
-        </table>
+        <div id="DayHigh"></div>
     </div>
+    <div>
+        <div id="TradeData"></div>
+    </div>
+    
 
 }
 else

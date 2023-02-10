@@ -29,15 +29,17 @@ namespace DM
         public string AvgVolume { get; set; }
         public string DhArray { get; set; }
 
-        public string V100 { get; set; }
-        public string V90 { get; set; }
-        public string V80 { get; set; }
-        public string V70 { get; set; }
-        public string V60 { get; set; }
-        public string V50 { get; set; }
-        public string V40 { get; set; }
-        public string V30 { get; set; }
-        public string V20 { get; set; }
-        public string V10 { get; set; }
+        public string TradeData { get; set; }
+
+        //public string V100 { get; set; }
+        //public string V90 { get; set; }
+        //public string V80 { get; set; }
+        //public string V70 { get; set; }
+        //public string V60 { get; set; }
+        //public string V50 { get; set; }
+        //public string V40 { get; set; }
+        //public string V30 { get; set; }
+        //public string V20 { get; set; }
+        //public string V10 { get; set; }
     }
 }

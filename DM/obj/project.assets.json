@@ -4497,7 +4497,7 @@
       "projectName": "DM",
       "projectPath": "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\DM.csproj",
       "packagesPath": "C:\\Users\\dlolf\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dlolf\\Source\\Repos\\dlolfert\\Graph\\DM\\obj\\",
+      "outputPath": "C:\\Users\\dlolf\\source\\repos\\dlolfert\\Graph\\DM\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\dlolf\\AppData\\Roaming\\NuGet\\NuGet.Config",

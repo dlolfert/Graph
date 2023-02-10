@@ -62,38 +62,38 @@ namespace DA
             //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
         }
 
-        public DayHigh GetSumGrid(DayHigh dh, string symbol)
-        {
-            using (SqlCommand comm = new SqlCommand())
-            {
-                using (SqlConnection conn = new SqlConnection())
-                {
-                    conn.ConnectionString = Cs;
-                    comm.CommandText = "SumGrid";
-                    comm.CommandType = System.Data.CommandType.StoredProcedure;
-                    comm.Parameters.AddWithValue("Symbol", symbol);
-                    comm.Connection = conn;
-                    conn.Open();
+        //public DayHigh GetSumGrid(DayHigh dh, string symbol)
+        //{
+        //    using (SqlCommand comm = new SqlCommand())
+        //    {
+        //        using (SqlConnection conn = new SqlConnection())
+        //        {
+        //            conn.ConnectionString = Cs;
+        //            comm.CommandText = "SumGrid";
+        //            comm.CommandType = System.Data.CommandType.StoredProcedure;
+        //            comm.Parameters.AddWithValue("Symbol", symbol);
+        //            comm.Connection = conn;
+        //            conn.Open();
 
-                    SqlDataReader dr = comm.ExecuteReader();
-                    dr.Read();
+        //            SqlDataReader dr = comm.ExecuteReader();
+        //            dr.Read();
 
-                    dh.V100 = Convert.ToString(dr["T100"]);
-                    dh.V90 = Convert.ToString(dr["T90"]);
-                    dh.V80 = Convert.ToString(dr["T80"]);
-                    dh.V70 = Convert.ToString(dr["T70"]);
-                    dh.V60 = Convert.ToString(dr["T60"]);
-                    dh.V50 = Convert.ToString(dr["T50"]);
-                    dh.V40 = Convert.ToString(dr["T40"]);
-                    dh.V30 = Convert.ToString(dr["T30"]);
-                    dh.V20 = Convert.ToString(dr["T20"]);
-                    dh.V10 = Convert.ToString(dr["T10"]);
-                }
-            }
+        //            dh.V100 = Convert.ToString(dr["T100"]);
+        //            dh.V90 = Convert.ToString(dr["T90"]);
+        //            dh.V80 = Convert.ToString(dr["T80"]);
+        //            dh.V70 = Convert.ToString(dr["T70"]);
+        //            dh.V60 = Convert.ToString(dr["T60"]);
+        //            dh.V50 = Convert.ToString(dr["T50"]);
+        //            dh.V40 = Convert.ToString(dr["T40"]);
+        //            dh.V30 = Convert.ToString(dr["T30"]);
+        //            dh.V20 = Convert.ToString(dr["T20"]);
+        //            dh.V10 = Convert.ToString(dr["T10"]);
+        //        }
+        //    }
 
-            return dh;
-            //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
-        }
+        //    return dh;
+        //    //Symbol Name    Average DaysAboveAvg    Total AdjustedTotal   DaysCloseAboveOpen DaysHighAboveOpen	% Day High Above Open   StdDev Records
+        //}
 
         public string GetDayHighAverage(string symbol)
         {
