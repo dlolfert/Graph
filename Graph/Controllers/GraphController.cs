@@ -55,17 +55,17 @@ namespace Graph.Controllers
                 
                 // Get Trading Data
 
-                List<DayRecord> dayRecords = drda.GetBaseRecords(symbol, 1.0M, 0);
+                List<DayRecord> dayRecords = drda.GetBaseRecords(symbol, 1.0M, 1);
                 foreach (var dayRecord in dayRecords)
                 {
-                    var dr = drda.GetSellValues(dayRecord, 1.0M, 0);
+                    var dr = drda.GetSellValues(dayRecord, 1.0M, 1);
                     dayRecord.SellDate = dr.SellDate;
                     dayRecord.SellPrice = dr.SellPrice;
                     dayRecord.Profit = dr.Profit;
                 }
 
                 dayRecords.Sort((x, y) => x.Date.CompareTo(y.Date));
-
+                
                 var tempRecords = dayRecords;
 
                 decimal runningCost = 0.0M;

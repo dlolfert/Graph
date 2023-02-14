@@ -43,7 +43,9 @@
         var chart = new google.visualization.LineChart(document.getElementById('TradeData'));
 
         var options = {
-            colors: ['red', 'green']
+            legend: { position: 'right' },
+            colors: ['red', 'green'],
+            curveType: 'function'
         };
 
         chart.draw(data, options);
