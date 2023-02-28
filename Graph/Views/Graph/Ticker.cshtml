@@ -52,7 +52,6 @@
     }
 </script>
 
-<h2>DayHigh</h2>
 <h2>@ViewData["Title"]</h2>
 
 @if(Model.GraphData.ErrorMessage.IsNullOrEmpty())
@@ -62,6 +61,12 @@
 {
     <div>@Html.DropDownList("tickerPickList", Model.TickerList)</div>
     <br />
+    <div>@Html.DropDownList("daysInTrade", Model.DaysInTradeList)</div>
+    <br />
+        <div>
+            @Html.DropDownList("percent", Model.PercentList)
+        </div>
+        <br />
     <div><input type="submit" value="Submit" /></div>
 }
 

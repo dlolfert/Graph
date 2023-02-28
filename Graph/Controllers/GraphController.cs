@@ -11,6 +11,7 @@ using System.Linq;
 using Graph.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
 
 namespace Graph.Controllers
 {
@@ -32,6 +33,9 @@ namespace Graph.Controllers
         {
             var tickerViewModel = new TickerViewModel();
             tickerViewModel.TickerList = buildSelectDropDownList("");
+            tickerViewModel.DaysInTradeList = buildDaysInTradeDropDownList("0");
+            tickerViewModel.PercentList = buildPercentList(.5M);
+
             tickerViewModel.GraphData = new DayHigh();
             return View("Ticker", tickerViewModel);
         }
@@ -42,7 +46,11 @@ namespace Graph.Controllers
             var tickerViewModel = new TickerViewModel();
             DayHigh dh = new DayHigh();
 
-            var symbol = Request.QueryString.Value.Split('=')[1];
+            string[] qs = Request.QueryString.Value.Replace("?", "").Split("&");
+
+            var symbol = qs[0].Split('=')[1];
+            var daysInTrade = qs[1].Split('=')[1];
+            decimal percent = Convert.ToDecimal(qs[2].Split('=')[1]);
 
             try
             {
@@ -55,19 +63,27 @@ namespace Graph.Controllers
                 
                 // Get Trading Data
 
-                List<DayRecord> dayRecords = drda.GetBaseRecords(symbol, 1.0M, 1);
-                foreach (var dayRecord in dayRecords)
-                {
-                    var dr = drda.GetSellValues(dayRecord, 1.0M, 1);
-                    dayRecord.SellDate = dr.SellDate;
-                    dayRecord.SellPrice = dr.SellPrice;
-                    dayRecord.Profit = dr.Profit;
-                }
+                List<DayRecord> dayRecords = drda.GetBaseRecords(symbol, percent, Convert.ToInt32(daysInTrade));
 
                 dayRecords.Sort((x, y) => x.Date.CompareTo(y.Date));
-                
+
                 var tempRecords = dayRecords;
 
+                foreach (var dayRecord in dayRecords)
+                {
+                    var sellRecord = (from dayrec in tempRecords 
+                       where dayrec.Symbol == dayRecord.Symbol &&
+                             dayrec.DayHigh >= dayRecord.Open + (dayRecord.Open * (percent / 100)) &&
+                             dayrec.Date >= dayRecord.Date.AddDays(Convert.ToInt32(daysInTrade)) orderby dayrec.Date select dayrec).FirstOrDefault();
+
+                   if (sellRecord != null)
+                   {
+                       dayRecord.SellDate = sellRecord.Date;
+                       dayRecord.SellPrice = dayRecord.Open + (dayRecord.Open * (percent / 100));
+                       dayRecord.Profit = dayRecord.SellPrice - dayRecord.Open;
+                   }
+                }
+                
                 decimal runningCost = 0.0M;
                 decimal runningProfit = 0.0M;
 
@@ -81,8 +97,7 @@ namespace Graph.Controllers
                     }
 
                     runningCost += dayRecord.Open;
-
-
+                    
                     dayRecord.RunningCost = runningCost;
                     dayRecord.RunningProfit = runningProfit;
                 }
@@ -106,6 +121,8 @@ namespace Graph.Controllers
                 // Get Trading Data
 
                 tickerViewModel.TickerList = buildSelectDropDownList(symbol);
+                tickerViewModel.DaysInTradeList = buildDaysInTradeDropDownList(daysInTrade);
+                tickerViewModel.PercentList = buildPercentList(percent);
             }
             catch (Exception e)
             {
@@ -137,6 +154,37 @@ namespace Graph.Controllers
                 selectList.Add(selectListItem);
             }
 
+            return selectList;
+        }
+
+        private List<SelectListItem> buildDaysInTradeDropDownList(string SelectedDaysInTrade)
+        {
+            var selectList = new List<SelectListItem>();
+            
+            for (int i = 0; i <= 20; i++)
+            {
+                selectList.Add(new SelectListItem { Value = Convert.ToString(i), Text = Convert.ToString(i) });
+                if (Convert.ToInt32(SelectedDaysInTrade).Equals(i))
+                {
+                    selectList.Last().Selected = true;
+                }
+            }
+
+            return selectList;
+        }
+
+        private List<SelectListItem> buildPercentList(decimal selectedPercent)
+        {
+            var selectList = new List<SelectListItem>();
+            for (decimal i = .5M; i <= 20M; i += .5M)
+            {
+                selectList.Add(new SelectListItem { Value = Convert.ToString(i), Text = Convert.ToString(i) });
+                if (selectedPercent.Equals(i))
+                {
+                    selectList.Last().Selected = true;
+                }
+            }
+           
             return selectList;
         }
 

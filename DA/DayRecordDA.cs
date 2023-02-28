@@ -62,30 +62,5 @@ namespace DA
             return records;
         }
 
-        public DayRecord GetSellValues(DayRecord dayRecord, decimal percent, int minDaysInTrade)
-        {
-            DayRecord returnDayRecord = new DayRecord();
-
-            using (SqlCommand comm = new SqlCommand())
-            {
-                using (SqlConnection conn = new SqlConnection(Cs))
-                {
-                    comm.CommandText = "SELECT TOP 1 [Date], [DayHigh] FROM [Barchart].[dbo].[Yahoo] " +
-                                       $"Where Symbol = '{dayRecord.Symbol}' AND [DayHigh] >= '{Convert.ToString(dayRecord.Open + (dayRecord.Open * (percent / 100)))}' and [Date] >= '{Convert.ToString(dayRecord.Date.AddDays(minDaysInTrade))}' Order By [Date]";
-                    comm.Connection = conn;
-                    conn.Open();
-
-                    SqlDataReader dr = comm.ExecuteReader();
-                    while (dr.Read())
-                    {
-                        returnDayRecord.SellDate = Convert.ToDateTime(dr["Date"]);
-                        returnDayRecord.SellPrice = dayRecord.Open + dayRecord.Open * (percent / 100);
-                        returnDayRecord.Profit = returnDayRecord.SellPrice - dayRecord.Open;
-                    }
-                }
-            }
-
-            return returnDayRecord;
-        }
     }
 }
