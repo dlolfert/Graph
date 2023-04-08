@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DA;
-using DM;
+﻿using DA;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -38,11 +33,11 @@ namespace Graph.Controllers
             model.AllSettings = new SettingsDa().GetAllSettings();
             return View("Setting", model);
         }
-        [Route("Setting/Delete/{Key}")]
-        public IActionResult Delete(string Key)
+        [Route("Setting/Delete/{key}")]
+        public IActionResult Delete(string key)
         {
             var sda = new SettingsDa();
-            sda.Delete(Key);
+            sda.Delete(key);
 
             ModelState.Clear();
 

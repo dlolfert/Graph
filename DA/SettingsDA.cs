@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Net.Sockets;
-using System.Text;
 
 namespace DA
 {
@@ -28,9 +24,9 @@ namespace DA
             }
         }
 
-        public void Delete(string Key)
+        public void Delete(string key)
         {
-            ExecuteScalar($"Delete From Settings Where [Key] = '{Key}'");
+            ExecuteScalar($"Delete From Settings Where [Key] = '{key}'");
         }
 
         public IDictionary<string,string> GetAllSettings()

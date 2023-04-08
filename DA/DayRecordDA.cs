@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 using DM;
 
 namespace DA
 {
-    public class DayRecordDA : BaseDa
+    public class DayRecordDa : BaseDa
     {
         public List<DayRecord> GetBaseRecords(string symbol, decimal percent, int minDaysInTrade)
         {
@@ -47,9 +45,9 @@ namespace DA
                             Close = Convert.ToDecimal(dr["Close"]),
                             DayLow = Convert.ToDecimal(dr["DayLow"]),
                             Volume = Convert.ToInt32(dr["Volume"]),
-                            Daily_Profit = Convert.ToDecimal(dr["Daily_Profit"]),
-                            One_Percent = Convert.ToDecimal(dr["One_Percent"]),
-                            Two_Percent = Convert.ToDecimal(dr["Two_Percent"])
+                            DailyProfit = Convert.ToDecimal(dr["Daily_Profit"]),
+                            OnePercent = Convert.ToDecimal(dr["One_Percent"]),
+                            TwoPercent = Convert.ToDecimal(dr["Two_Percent"])
 
                         };
 

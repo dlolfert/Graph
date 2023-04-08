@@ -1,5 +1,3 @@
-using System;
-
 namespace Graph.Models
 {
     public class ErrorViewModel

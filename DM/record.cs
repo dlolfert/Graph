@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DM
+﻿namespace DM
 {    public class Record
     {
         //Date,Open,High,Low,Close,Adj Close, Volume

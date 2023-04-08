@@ -1,27 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.IO;
-using System.Net;
-using System.Runtime.CompilerServices;
-using DM;
 
 namespace DA
 {
-    public class FiveDayDA : BaseDa
+    public class FiveDayDa : BaseDa
     {
 
-        public void BuildData(string Symbol, int DaysBack)
+        public void BuildData(string symbol, int daysBack)
         {
             using (SqlCommand comm = new SqlCommand())
             {
                 using (SqlConnection conn = new SqlConnection(this.Cs))
                 {
                     comm.CommandType = CommandType.StoredProcedure;
-                    comm.Parameters.Add("Symbol", SqlDbType.NChar).Value = Symbol;
-                    comm.Parameters.Add("DaysBack", SqlDbType.Int).Value = DaysBack;
+                    comm.Parameters.Add("Symbol", SqlDbType.NChar).Value = symbol;
+                    comm.Parameters.Add("DaysBack", SqlDbType.Int).Value = daysBack;
                     comm.CommandText = "[WeeklyHigh]";
                     comm.Connection = conn;
                     conn.Open();

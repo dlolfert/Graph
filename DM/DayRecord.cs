@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DM
 {
@@ -13,9 +11,9 @@ namespace DM
         public decimal Close { get; set; }
         public decimal DayLow { get; set; }
         public int Volume { get; set; }
-        public decimal Daily_Profit { get; set; }
-        public decimal One_Percent { get; set; }
-        public decimal Two_Percent { get; set; }
+        public decimal DailyProfit { get; set; }
+        public decimal OnePercent { get; set; }
+        public decimal TwoPercent { get; set; }
 
         public DateTime SellDate { get; set; }
         public decimal SellPrice { get; set; }

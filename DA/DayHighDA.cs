@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Net.Cache;
-using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
 using DM;
-using ServiceStack.Text;
-using ServiceStack.Text.Json;
-using ServiceStack.Extensions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Net.NetworkInformation;
 
 namespace DA
 {
@@ -165,9 +156,9 @@ namespace DA
 
         public void RetreivePeriods()
         {
-            var Epoch = Convert.ToDateTime("1970-01-01");
+            var epoch = Convert.ToDateTime("1970-01-01");
             
-            var epochTicks = Epoch.Ticks;
+            var epochTicks = epoch.Ticks;
             var today = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
             today = today.AddHours(16);
             today = today.AddSeconds(805);
