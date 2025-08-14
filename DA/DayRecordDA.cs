@@ -15,7 +15,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection(Cs))
                 {
-                    comm.CommandText = "SELECT TOP (100) " +
+                    comm.CommandText = "SELECT TOP (150) " +
                                        "[Symbol], " +
                                        "[Date], " +
                                        "[DayHigh], " +

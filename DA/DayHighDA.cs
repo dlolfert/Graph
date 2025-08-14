@@ -1,11 +1,13 @@
-﻿using System;
-using System.Text;
+﻿using DM;
+using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using DM;
-using Newtonsoft.Json;
+using System.Text;
+//using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace DA
 {
@@ -189,18 +191,29 @@ namespace DA
         {
             RetreivePeriods();
 
+            //https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=META&outputsize=full&apikey=WO3Z4BIZGDF6BMR4
+            //https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2024-08-08/2025-08-08?apiKey=RaYykPoInrSUBjOV582kC4zI_mhXpJxq
+            /*Worked : https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&datatype=csv&apikey=WO3Z4BIZGDF6BMR4")
+             * 
+             * 
+             */
+            string from = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd");
+            string to = DateTime.Now.ToString("yyyy-MM-dd");
+
             try
             {
-                SettingsDa sda = new SettingsDa();
-                string p1 = sda.GetSetting("Period1");
-                string p2 = sda.GetSetting("Period2");
-
-                var wr = WebRequest.Create(
-                    $"http://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1={p1}&period2={p2}&interval=1d&events=history");
+               var wr = WebRequest.Create(
+                    $"https://api.polygon.io/v2/aggs/ticker/{symbol}/range/1/day/{from}/{to}?apiKey=RaYykPoInrSUBjOV582kC4zI_mhXpJxq");
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var resp = wr.GetResponse();
 
                 var sr = new StreamReader(resp.GetResponseStream());
+
+                string json = sr.ReadToEnd();
+
+                var stockData = JsonSerializer.Deserialize<StockData>(json);
+
+
 
                 //System.IO.File.AppendAllText($"C:\\temp\\{symbol}.csv", sr.ReadToEnd());
                 UploadData(sr.ReadToEnd(), symbol);
@@ -233,7 +246,7 @@ namespace DA
 
                 strResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
-                dynamic obj = JsonConvert.DeserializeObject<dynamic>(strResponse);
+                dynamic obj = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(strResponse);
 
                 var name = obj.results.name.Value.ToString().Replace("'", "^");
 
@@ -280,7 +293,7 @@ namespace DA
             try
             {
 
-
+                data = data.Replace('\r', ' ');
                 var lines = data.Split('\n');
 
                 bool header = true;
@@ -297,8 +310,8 @@ namespace DA
                             rec.High = fields[2];
                             rec.Low = fields[3];
                             rec.Close = fields[4];
-                            rec.Adjclose = fields[5];
-                            rec.Volume = fields[6];
+                            //rec.Adjclose = fields[5];
+                            rec.Volume = fields[5].Trim();
 
                             string comm =
                                 $"If NOT EXISTS (Select * From Yahoo Where Symbol = '{symbol}' and [Date] = '{ Convert.ToDateTime(rec.Date).ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) }') " +
@@ -358,5 +371,29 @@ namespace DA
 
             return exists;
         }
+    }
+
+    public class StockResult
+    {
+        public double v { get; set; }         // Volume
+        public double vw { get; set; }      // Volume Weighted Average Price
+        public double o { get; set; }       // Open Price
+        public double c { get; set; }       // Close Price
+        public double h { get; set; }       // High Price
+        public double l { get; set; }       // Low Price
+        public long t { get; set; }         // Timestamp (Unix ms)
+        public int n { get; set; }          // Number of Transactions
+    }
+
+    public class StockData
+    {
+        public string ticker { get; set; }
+        public int queryCount { get; set; }
+        public int resultsCount { get; set; }
+        public bool adjusted { get; set; }
+        public List<StockResult> results { get; set; }
+        public string status { get; set; }
+        public string request_id { get; set; }
+        public int count { get; set; }
     }
 }
