@@ -213,10 +213,10 @@ namespace DA
 
                 var stockData = JsonSerializer.Deserialize<StockData>(json);
 
-
+                    
 
                 //System.IO.File.AppendAllText($"C:\\temp\\{symbol}.csv", sr.ReadToEnd());
-                UploadData(sr.ReadToEnd(), symbol);
+                UploadData(stockData, symbol);
                 //Microsoft.VisualBasic.FileSystem.Rename($"C:\\Users\\dlolf\\Downloads\\{symbol}.csvx", $"C:\\Users\\dlolf\\Downloads\\{symbol}.csv");
 
             }
@@ -257,7 +257,7 @@ namespace DA
                               "END " +
                               "ELSE " +
                               "BEGIN " +
-                              $"INSERT INTO [Barchart].[dbo].[Top100] ([Name], Symbol, [Date]) Values('{name}', '{symbol}', GETDATE()) " +
+                              $"INSERT INTO [Barchart].[dbo].[Top100] ([Name], Symbol, [Date]) Values('{name}', '{symbol.ToUpper()}', GETDATE()) " +
                               "END";
 
                 using (SqlCommand comm = new SqlCommand())
@@ -283,7 +283,7 @@ namespace DA
         }
 
 
-        public void UploadData(string data, string symbol)
+        public void UploadData(StockData data, string symbol)
         {
             StringBuilder sqlCommand = new StringBuilder();
 
@@ -293,25 +293,25 @@ namespace DA
             try
             {
 
-                data = data.Replace('\r', ' ');
-                var lines = data.Split('\n');
+                //data = data.Replace('\r', ' ');
+                //var lines = data.Split('\n');
 
-                bool header = true;
-                foreach (var line in lines)
+                //bool header = true;
+                foreach (var result in data.results)
                 {
                     try
                     {
-                        if (!header)
-                        {
-                            var fields = line.Split(",".ToCharArray());
+                        //if (!header)
+                        //{
+                            //var fields = line.Split(",".ToCharArray());
                             Record rec = new Record();
-                            rec.Date = fields[0];
-                            rec.Open = fields[1];
-                            rec.High = fields[2];
-                            rec.Low = fields[3];
-                            rec.Close = fields[4];
+                            rec.Date = DateTimeOffset.FromUnixTimeMilliseconds(result.t).DateTime.ToString("yyyy-MM-dd");
+                            rec.Open = result.o.ToString();
+                            rec.High = result.h.ToString();
+                            rec.Low = result.l.ToString();
+                            rec.Close = result.c.ToString();
                             //rec.Adjclose = fields[5];
-                            rec.Volume = fields[5].Trim();
+                            rec.Volume = result.v.ToString();
 
                             string comm =
                                 $"If NOT EXISTS (Select * From Yahoo Where Symbol = '{symbol}' and [Date] = '{ Convert.ToDateTime(rec.Date).ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) }') " +
@@ -331,9 +331,9 @@ namespace DA
                             //    sqlCommand =
                             //        $"Insert Into [Yahoo] (Symbol, [Date], DayHigh, [Open], [Close], DayLow, Volume) Values('{symbol}','{rec.Date}','{rec.High}','{rec.Open}','{rec.Close}', '{rec.Low}', '{rec.Volume}')";
                             //}
-                        }
+                        //}
 
-                        header = false;
+                        //header = false;
                     }
                     catch (Exception ex)
                     {
