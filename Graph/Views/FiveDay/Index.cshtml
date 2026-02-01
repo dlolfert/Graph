@@ -4,6 +4,21 @@
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<style>
+    .grid {
+        border: solid 2px;
+        border-collapse: collapse;
+    }
+        .grid tr,
+        .grid td,
+        .grid th {
+            border: 1px solid;
+            padding: 3px;
+        }
+</style>
+
+
 @* <script language="javascript">
     function mySelect() {
         alert(document.getElementById("yourDropName").select());
@@ -51,13 +66,23 @@
 @{
     if (Model.FiveDayList != null)
     {
-        <table>
+        <table class="grid">
+            <tr>
+                <td>Symbol</td>
+                <td>Mon</td>
+                <td>Fri</td>
+                <td>Open</td>
+                <td>Close</td>
+                <td>High</td>
+                <td>Diff</td>
+                <td>Max Dif</td>
+            </tr>
             @foreach (var fiveDay in Model.FiveDayList)
             {
                 <tr>
                     <td>@fiveDay.Symbol</td>
-                    <td>@fiveDay.Monday</td>
-                    <td>@fiveDay.Friday</td>
+                    <td>@fiveDay.Monday.ToString("yyyy-MM-dd")</td>
+                    <td>@fiveDay.Friday.ToString("yyyy-MM-dd")</td>
                     <td>@fiveDay.Open</td>
                     <td>@fiveDay.Close</td>
                     <td>@fiveDay.High</td>

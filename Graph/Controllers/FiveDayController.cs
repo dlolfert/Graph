@@ -45,25 +45,26 @@ namespace Graph.Controllers
         public ViewResult GetFiveDayData()
         {
             var fiveDayViewModel = new FiveDayViewModel();
-            
-
-            var fdda = new FiveDayDa();
-            
-            if (Request.QueryString.Value != null)
+            try
             {
-                string[] qs = Request.QueryString.Value.Replace("?", "").Split("&");
-                var symbol = qs[0].Split('=')[1];
+                var fdda = new FiveDayDa();
 
-                fiveDayViewModel.TickerList = BuildSelectDropDownList(symbol);
-
-                try
+                if (Request.QueryString.Value != null)
                 {
+                    string[] qs = Request.QueryString.Value.Replace("?", "").Split("&");
+                    var symbol = qs[0].Split('=')[1];
+
+                    DayHighDa dayHighDa = new DayHighDa();
+                    dayHighDa.DownloadHistory(symbol);
+
+                    fiveDayViewModel.TickerList = BuildSelectDropDownList(symbol);
+
                     fiveDayViewModel.FiveDayList = fdda.GetFiveDayData(symbol);
                 }
-                catch (Exception e)
-                {
-                
-                }
+            }
+            catch (Exception e)
+            {
+                fiveDayViewModel.ErrorMessage = e.Message;
             }
             
             return View("Index", fiveDayViewModel);

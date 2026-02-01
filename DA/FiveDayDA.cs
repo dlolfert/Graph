@@ -54,7 +54,7 @@ namespace DA
                             Open = Convert.ToDecimal(dr["Open"]),
                             Close = Convert.ToDecimal(dr["Close"]),
                             High = Convert.ToDecimal(dr["High"]),
-                            WeekEndValue = Convert.ToInt32(dr["WeekEndValue"]),
+                            WeekEndValue = Convert.ToDecimal(dr["WeekEndValue"]),
                             MaxValue = Convert.ToDecimal(dr["MaxValue"])
                         };
 
