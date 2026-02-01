@@ -35,6 +35,12 @@ namespace Graph.Controllers
             return View("Ticker", tickerViewModel);
         }
 
+        [Route("Graph/DayHigh/{symbol}")]
+        public ActionResult DayHigh(string symbol)
+        {
+            return View("DayHigh", new DM.DayHigh());
+        }
+
         [HttpGet]
         public ViewResult GetTickerData()
         {

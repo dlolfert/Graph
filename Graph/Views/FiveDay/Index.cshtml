@@ -1,9 +1,10 @@
-﻿@model DM.FiveDay
+﻿@using DM
+@model FiveDayViewModel
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script language="javascript">
+@* <script language="javascript">
     function mySelect() {
         alert(document.getElementById("yourDropName").select());
     }
@@ -36,4 +37,37 @@
             
 
         </tbody>
-</table>
+</table> *@
+
+@using (Html.BeginForm("GetFiveDayData", "FiveDay", FormMethod.Get))
+{
+    <div>@Html.DropDownList("tickerPickList", Model.TickerList)</div>
+    <br />
+
+    <div><input type="submit" value="Submit" /></div>
+}
+
+
+@{
+    if (Model.FiveDayList != null)
+    {
+        <table>
+            @foreach (var fiveDay in Model.FiveDayList)
+            {
+                <tr>
+                    <td>@fiveDay.Symbol</td>
+                    <td>@fiveDay.Monday</td>
+                    <td>@fiveDay.Friday</td>
+                    <td>@fiveDay.Open</td>
+                    <td>@fiveDay.Close</td>
+                    <td>@fiveDay.High</td>
+                    <td>@fiveDay.WeekEndValue</td>
+                    <td>@fiveDay.MaxValue</td>
+                </tr>
+            }
+        </table>
+    }
+}
+
+
+  

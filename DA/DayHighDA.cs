@@ -233,13 +233,7 @@ namespace DA
             try
             {
                 string url = $"https://api.polygon.io/v3/reference/tickers/{symbol}?apiKey=RaYykPoInrSUBjOV582kC4zI_mhXpJxq";
-                //https://api.polygon.io/v3/reference/tickers/QYLD?apiKey=RaYykPoInrSUBjOV582kC4zI_mhXpJxq
-            
-                //var wr2 = WebRequest.Create($"https://www.zacks.com/stock/quote/{symbol}");
-                //var zacks = wr2.GetResponse();
-                //System.IO.File.WriteAllText($@"C:\Temp\Zacks_{symbol}.txt", new StreamReader(zacks.GetResponseStream()).ReadToEnd());
-
-
+                
                 var wr = WebRequest.Create(url);
 
                 var response = wr.GetResponse();
@@ -253,14 +247,14 @@ namespace DA
                 var command = $"Select [Name] From [Barchart].[dbo].[Top100] Where Symbol = '{symbol}' " +
                               "IF(@@ROWCOUNT > 0) " +
                               "BEGIN " +
-                              $"Update [Barchart].[dbo].[Top100] Set [Name] = '{name}' Where Symbol = '{symbol}' " +
+                              $"Update [Barchart].[dbo].[Top100] Set [Name] = '{name}', [Date] = GETDATE() Where Symbol = '{symbol}' " +
                               "END " +
                               "ELSE " +
                               "BEGIN " +
                               $"INSERT INTO [Barchart].[dbo].[Top100] ([Name], Symbol, [Date]) Values('{name}', '{symbol.ToUpper()}', GETDATE()) " +
                               "END";
 
-                using (SqlCommand comm = new SqlCommand())
+                using (SqlCommand   comm = new SqlCommand())
                 {
                     using (SqlConnection conn = new SqlConnection(Cs))
                     {
