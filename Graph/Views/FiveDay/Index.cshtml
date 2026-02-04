@@ -3,8 +3,31 @@
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
+    string WeekArray = Model.WeekArray;
+}
+<script type="text/javascript">
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    
+    function drawChart() {
+        // Define the chart to be drawn.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Close');
+        data.addColumn('number', 'Max Value');
+        data.addRows(@Html.Raw(WeekArray));
+
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.ColumnChart(document.getElementById('WeekHigh'));
+
+        var options = {
+            colors: ['green', 'red']
+        };
+
+        chart.draw(data, options);
+    }
+</script>
 <style>
     .grid {
         border: solid 2px;
@@ -19,40 +42,6 @@
 </style>
 
 
-@* <script language="javascript">
-    function mySelect() {
-        alert(document.getElementById("yourDropName").select());
-    }
-</script>
-<h1>View</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table" style="border: solid; border-width: 1px; border-color: green;">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Symbol)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>@Html.DropDownList("yourDropName", Model.Tickers, new { @class = "form-control", @onselect = "mySelect();" } )</th>
-    </tr>
-    <tr>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-        @using (Html.BeginForm("Index", "FiveDay", FormMethod.Post))
-        {
-            <tr><td><input type="submit" value="submit" /></td></tr>
-        }
-            
-
-        </tbody>
-</table> *@
 
 @using (Html.BeginForm("GetFiveDayData", "FiveDay", FormMethod.Get))
 {
@@ -62,6 +51,9 @@
     <div><input type="submit" value="Submit" /></div>
 }
 
+<div style="">
+    <div style="" id="WeekHigh"></div>
+</div>
 
 @{
     if (Model.FiveDayList != null)
@@ -94,5 +86,3 @@
     }
 }
 
-
-  

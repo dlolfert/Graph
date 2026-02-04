@@ -9,5 +9,6 @@ namespace Graph.Models
         public List<SelectListItem> TickerList { get; set; }
         public List<FiveDay> FiveDayList { get; set; }
         public string ErrorMessage { get; set; }
+        public string WeekArray { get; set; }
     }
 }

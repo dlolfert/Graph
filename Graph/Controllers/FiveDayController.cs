@@ -60,6 +60,16 @@ namespace Graph.Controllers
                     fiveDayViewModel.TickerList = BuildSelectDropDownList(symbol);
 
                     fiveDayViewModel.FiveDayList = fdda.GetFiveDayData(symbol);
+                    
+                    string json = "[";
+                    foreach (var fd in fiveDayViewModel.FiveDayList.Take(60))
+                    {
+                        json += "['" + fd.Monday.ToString("yyyy/MM/dd") + "', " + fd.WeekEndValue + ", " + fd.MaxValue + "],";
+                    }
+                    if (json.LastIndexOf(',') > 0) json = json.Substring(0, json.LastIndexOf(','));
+                    json += "]";
+
+                    fiveDayViewModel.WeekArray = json;
                 }
             }
             catch (Exception e)
