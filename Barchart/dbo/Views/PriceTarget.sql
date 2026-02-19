@@ -1,9 +1,11 @@
 ﻿
+
+
 CREATE VIEW [dbo].[PriceTarget]
 AS
 SELECT        Headline, TimeStampUtc, Ticker
 FROM            dbo.NewsFeed
-WHERE        (Headline LIKE '%price target raised to%') Or Headline Like '%Upgraded%'
+WHERE        (Headline LIKE '%raised%') Or Headline Like '%upgrade%'
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'PriceTarget';
 

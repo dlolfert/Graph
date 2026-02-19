@@ -14,6 +14,7 @@ namespace Graph.Controllers
     public class FiveDayController : Controller
     {
         ZacksRankDa _zr = new ZacksRankDa();
+        
         // GET: FiveDayDA
         [Route("{symbol}")]
         public ActionResult Index(string symbol)
@@ -21,26 +22,10 @@ namespace Graph.Controllers
             FiveDayViewModel fdtvm = new FiveDayViewModel();
             
             fdtvm.TickerList = BuildSelectDropDownList(symbol);
-
-            //DM.FiveDay fiveDays = new DM.FiveDay();
-            //fiveDays.Tickers = new List<SelectListItem>();
-            
-           
-            //var symbols = zrda.GetSymbols();
-            //int i = 0;
-            //foreach (var t in symbols)
-            //{
-            //    var slix = new SelectListItem();
-            //    slix.Text = string.IsNullOrWhiteSpace(t.Name) ? "": t.Name;
-            //    slix.Value =  string.IsNullOrWhiteSpace(t.Symbol) ? "" : t.Symbol;
-            //    fiveDays.Tickers.Add(slix);
-            //    i++;
-            //    if (i > 5)
-            //        break;
-            //}
-
+                       
             return View("Index", fdtvm);
         }
+
         [HttpGet]
         public ViewResult GetFiveDayData()
         {
@@ -54,8 +39,9 @@ namespace Graph.Controllers
                     string[] qs = Request.QueryString.Value.Replace("?", "").Split("&");
                     var symbol = qs[0].Split('=')[1];
 
-                    DayHighDa dayHighDa = new DayHighDa();
-                    dayHighDa.DownloadHistory(symbol);
+                    TickerDA tickerDA = new TickerDA();
+                    tickerDA.DownloadSummary(symbol);
+                    tickerDA.DownloadHistory(symbol);
 
                     fiveDayViewModel.TickerList = BuildSelectDropDownList(symbol);
 

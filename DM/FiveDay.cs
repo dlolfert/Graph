@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -17,5 +18,8 @@ namespace DM
         public decimal WeekEndValue { get; set; }
         public decimal MaxValue {  get; set; }
         public string ErrorMessage { get; set; }
-    } 
+        public decimal WeekEndPercent => Math.Round(((((Open * 100) / Close) - 100) * -1), 1);
+        public decimal MaxPercent => Math.Round(((((Open * 100) / High) - 100) * -1), 1);
+
+    }
 }

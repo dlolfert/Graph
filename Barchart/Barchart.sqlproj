@@ -61,6 +61,8 @@
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\Views\" />
     <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\ZacksRank.sql" />
@@ -70,10 +72,15 @@
     <Build Include="dbo\Tables\Settings.sql" />
     <Build Include="dbo\Tables\NewsFeed.sql" />
     <Build Include="dbo\Views\PriceTarget.sql" />
+    <Build Include="Security\TRUMP_dlolf.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Functions\GetMonday.sql" />
+    <Build Include="dbo\Functions\GetFriday.sql" />
     <Build Include="dbo\Stored Procedures\WeeklyHigh.sql" />
     <Build Include="dbo\Stored Procedures\UpdateTop100WithNewSymbols.sql" />
     <Build Include="dbo\Stored Procedures\SumGrid.sql" />
     <Build Include="dbo\Stored Procedures\NEW.sql" />
+    <Build Include="dbo\Stored Procedures\GetTickerDateByWeek.sql" />
     <Build Include="dbo\Stored Procedures\GetStockRaisedDailyReport.sql" />
     <Build Include="dbo\Stored Procedures\GetHeaderInfo.sql" />
   </ItemGroup>

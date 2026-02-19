@@ -1,7 +1,4 @@
 ﻿
-
-
-
 -- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
@@ -14,6 +11,8 @@ CREATE PROCEDURE [dbo].[WeeklyHigh]
 AS
 BEGIN
 
+ DELETE FROM [Barchart].[dbo].[WeeklyGain] Where Symbol = @Symbol
+
  DECLARE @Start AS DATETIME
  DECLARE @Monday AS DATETIME
  DECLARE @Tuesday AS DATETIME
@@ -23,14 +22,18 @@ BEGIN
  DECLARE @WeekHigh AS DECIMAL(11,2)
  DECLARE @FridayClose AS DECIMAL(11,2)
 
+ DECLARE @LastDayOfTrading AS DATETIME
+
  Select @Start = DATEADD(DAY, @DaysBack, GETDATE())
+
+ Select TOP 1 @LastDayOfTrading = [Date] From [Barchart].[dbo].[Yahoo] Where Symbol = @Symbol Order By [DATE] Desc
  
  WHILE(DATENAME(dw, @Start) != 'Monday')
  BEGIN
 	SET @Start = DATEADD(DAY, 1, @Start)
  END
 
- WHILE(@Start < GETDATE())
+ WHILE(@Start < @LastDayOfTrading)
  BEGIN
 
 	 SET @Monday = @Start
@@ -52,14 +55,19 @@ BEGIN
 		Select @MondayOpen = [Open] From [Barchart].[dbo].[Yahoo] Where [Date] = DATEADD(DAY, 1, @Monday) And Symbol = @Symbol
 	 END
 	 
+	 PRINT @Monday
+	 PRINT @Friday
+	 PRINT ''
+
 	 Select TOP 1 @WeekHigh = [DayHigh] From [Barchart].[dbo].[Yahoo] Where [Date] >= @Monday And [Date] <= @Friday And Symbol = @Symbol Order By DayHigh DESC
 	 
 	 Select @FridayClose = [Close] From [Barchart].[dbo].[Yahoo] Where [Date] = @Friday And Symbol = @Symbol
+	 
 	 IF(@FridayClose = 0.00)
 	 BEGIN
 		Select @FridayClose = [Close] From [Barchart].[dbo].[Yahoo] Where [Date] = DATEADD(DAY, -1, @Friday) And Symbol = @Symbol
 	 END
-  
+	 	 
 	 IF ((Select Count(*) From [Barchart].[dbo].[WeeklyGain] Where Symbol = @Symbol and Monday = @Monday) < 1)
 	 BEGIN
 		Insert Into [Barchart].[dbo].[WeeklyGain] Values(

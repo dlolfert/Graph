@@ -1,6 +1,7 @@
 ﻿
 
 
+
 -- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
@@ -30,6 +31,6 @@ BEGIN
 
   Where [NewsFeed].TimeStampUtc >= DATEADD(DAY, -2, GETUTCDATE())
   And
-  ([NewsFeed].Headline LIKE '%Upgraded%' Or [NewsFeed].Headline Like '%price target raised to%')
+  ([NewsFeed].Headline LIKE '%Upgraded%' Or [NewsFeed].Headline Like '%raised%')
   Order By [NewsFeed].Ticker, [dbo].[PriceTarget].TimeStampUtc DESC
 END

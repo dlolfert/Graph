@@ -12,7 +12,7 @@ namespace Graph.Controllers
 {
     public class GraphController : Controller
     {
-        
+        TickerDA tickerDA = new TickerDA();
         DayHighDa _dhda = new DA.DayHighDa();
         ZacksRankDa _zr = new ZacksRankDa();
         private DayRecordDa _drda = new DayRecordDa();
@@ -58,8 +58,8 @@ namespace Graph.Controllers
                 try
                 {
                     //// Get Graph Data...
-                    _dhda.DownloadHistory(symbol);
-                    _dhda.DownloadSummary(symbol);
+                    tickerDA.DownloadHistory(symbol);
+                    tickerDA.DownloadSummary(symbol);
                 
                     dh = _dhda.GetHeaderInfo(symbol);
                     dh.DhArray = _dhda.GetDayHighBySymbol(symbol);

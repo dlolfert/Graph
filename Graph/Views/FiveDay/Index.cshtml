@@ -67,7 +67,9 @@
                 <td>Close</td>
                 <td>High</td>
                 <td>Diff</td>
+                <td>Diff Percent</td>
                 <td>Max Dif</td>
+                <td>Max Percent</td>
             </tr>
             @foreach (var fiveDay in Model.FiveDayList)
             {
@@ -79,7 +81,9 @@
                     <td>@fiveDay.Close</td>
                     <td>@fiveDay.High</td>
                     <td>@fiveDay.WeekEndValue</td>
+                    <td>@fiveDay.WeekEndPercent</td>
                     <td>@fiveDay.MaxValue</td>
+                    <td>@fiveDay.MaxPercent</td>
                 </tr>
             }
         </table>

@@ -8,3 +8,8 @@
     [Volume]  BIGINT         NULL
 );
 
+
+GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20260214-151716]
+    ON [dbo].[Yahoo]([Symbol] ASC, [Date] ASC);
+
