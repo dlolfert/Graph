@@ -1,5 +1,5 @@
 ﻿@using DM
-@model DM.Yahoo;
+@model YahooViewModel;
 @{
     ViewData["Title"] = "Yahoo";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,3 +9,67 @@
 
 
 <div>Yahoo!</div>
+<div style="color:red;">@Model.ErrorMessage</div>
+
+@using (Html.BeginForm("GetYahooData", "Yahoo", FormMethod.Get))
+{
+    <div>@Html.DropDownList("tickerPickList", Model.TickerList)</div>
+    <br />
+
+    <div><input type="submit" value="Submit" /></div>
+}
+
+
+@{
+    if (Model.Gains > 0)
+    {
+        <table class="grid">
+            <tr>
+                <td>Gains</td>
+                <td>Cost</td>
+                <td>Profit</td>
+            </tr>
+            <tr>
+                <td>@Model.Gains</td>
+                <td>@Model.Cost</td>
+                <td>@Model.Profit</td>
+            </tr>
+        </table>
+    }
+}
+
+
+@{
+    if (Model.YahooList != null)
+    {
+        <table class="grid">
+            <tr>
+                <td>Symbol</td>
+                <td>Trade Date</td>
+                <td>Open</td>
+                <td>Day High Date</td>
+                <td>Day High</td>
+                <td>Day High Percent</td>
+                <td>Sell Date</td>
+                <td>Sell Price</td>
+                <td>Gain</td>
+                <td>Cost</td>
+            </tr>
+            @foreach (var yahoo in Model.YahooList)
+            {
+                <tr>
+                    <td>@yahoo.Symbol</td>
+                    <td>@yahoo.TradeDate.ToString("yyyy-MM-dd")</td>
+                    <td>@yahoo.Open</td>
+                    <td>@yahoo.DayHighDate.ToString("yyyy-MM-dd")</td>
+                    <td>@yahoo.DayHigh</td>
+                    <td>@yahoo.DayHighPercent</td>
+                    <td>@yahoo.SellDate.ToString("yyyy-MM-dd")</td>
+                    <td>@yahoo.SellPrice</td>
+                    <td>@yahoo.Gains</td>
+                    <td>@yahoo.ShareCost</td>
+                </tr>
+            }
+        </table>
+    }
+}

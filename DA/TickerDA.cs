@@ -38,7 +38,7 @@ namespace DA
 
 
 
-                //System.IO.File.AppendAllText($"C:\\temp\\{symbol}.csv", sr.ReadToEnd());
+                File.AppendAllText($"C:\\temp\\{DateTime.Now.ToString("yyyy-MM-ddThh-mm-ss")}_api.polygon.io_{symbol}.txt", json);
                 UploadData(stockData, symbol);
                 //Microsoft.VisualBasic.FileSystem.Rename($"C:\\Users\\dlolf\\Downloads\\{symbol}.csvx", $"C:\\Users\\dlolf\\Downloads\\{symbol}.csv");
 
@@ -79,7 +79,7 @@ namespace DA
                     // -------------------------------------------------------------------------
 
                     // do something with the json_data
-                    System.IO.File.AppendAllText($"C:\\temp\\{symbol}.csv", json_data["Time Series (Daily)"].ToString());
+                    System.IO.File.AppendAllText($"C:\\temp\\{DateTime.Now.ToString("yyyy-MM-ddThh-mm-ss")}_www.alphaadvantage.co_{symbol}.txt", json_data["Time Series (Daily)"].ToString());
                 }
             }
             catch (Exception ex)
@@ -167,7 +167,10 @@ namespace DA
                         rec.Low = result.l.ToString();
                         rec.Close = result.c.ToString();
                         //rec.Adjclose = fields[5];
-                        rec.Volume = result.v.ToString();
+                        if (result.v.ToString().Contains("."))
+                            rec.Volume = result.v.ToString().Substring(0, result.v.ToString().IndexOf('.'));
+                        else
+                            rec.Volume = result.v.ToString();
 
                         string comm =
                             $"If NOT EXISTS (Select * From Yahoo Where Symbol = '{symbol}' and [Date] = '{Convert.ToDateTime(rec.Date).ToString("yyyy-MM-dd", CultureInfo.CurrentCulture)}') " +

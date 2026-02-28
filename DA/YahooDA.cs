@@ -7,7 +7,7 @@ namespace DA
 {
     public class YahooDa : BaseDa
     {
-        public  List<Yahoo> GetTradeData(string symbol,int days = 200)
+        public  List<Yahoo> GetTradeData(string symbol,int days = 250)
         {
             var td = new List<Yahoo>();
 
@@ -15,7 +15,7 @@ namespace DA
             {
                 using (SqlConnection conn = new SqlConnection(Cs))
                 {
-                    comm.CommandText = $"Select Top {days} [Date], [Open], DayHigh From dbo.Yahoo Where Symbol = '{symbol}' Order By [Date]";
+                    comm.CommandText = $"Select Top {days} [Date], [Open], DayHigh From dbo.Yahoo Where Symbol = '{symbol}' Order By [Date] DESC";
                     comm.Connection = conn;
 
                     conn.Open();
@@ -26,8 +26,8 @@ namespace DA
                         var y = new Yahoo();
 
                         y.Symbol = symbol;
-                        y.TradeDate = Convert.ToDateTime(dr["[Date]"]);
-                        y.Open = Convert.ToDecimal(dr["[Open]"]);
+                        y.TradeDate = Convert.ToDateTime(dr["Date"]);
+                        y.Open = Convert.ToDecimal(dr["Open"]);
                         y.DayHigh = Convert.ToDecimal(dr["DayHigh"]);
 
                         td.Add(y);
