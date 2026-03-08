@@ -1,12 +1,11 @@
 ﻿@using DM
+
 @model YahooViewModel;
+
 @{
     ViewData["Title"] = "Yahoo";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var weekdays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Where(d => d >= DayOfWeek.Monday && d <= DayOfWeek.Friday).Select(d => new SelectListItem { Text = d.ToString(), Value = d.ToString() }).ToList();
 }
-
 
 <div>Yahoo!</div>
 <div style="color:red;">@Model.ErrorMessage</div>
@@ -17,7 +16,7 @@
     <br />
 
     <div>Buy Day of Week : </div>
-    <div>@Html.DropDownList("DayOfWeekList", weekdays)</div>
+    <div>@Html.DropDownList("DayOfWeekList", Model.StartDayList)</div>
     <br />
     
     <div>Percent Increase : </div>
@@ -35,7 +34,6 @@
     <div><input type="submit" value="Submit" /></div>
     <br />
 }
-
 
 @{
     if (Model.Gains > 0)

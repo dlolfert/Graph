@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Graph.Models
 {
     public class YahooViewModel
     {
+        public List<SelectListItem> StartDayList { get; set; }
         public List<SelectListItem> TickerList { get; set; }
         public List<SelectListItem> PercentIncreaseList { get; set; }
         public List<SelectListItem> HoldDays { get; set; }
