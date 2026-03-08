@@ -135,7 +135,7 @@ namespace DA
                 //throw;
             }
 
-            System.IO.File.WriteAllText($"C:\\Temp\\{symbol}_Summary.txt", strResponse);
+            System.IO.File.WriteAllText($"C:\\Temp\\{symbol}_api.ploygon.io.Summary.txt", strResponse);
         }
 
 
@@ -213,23 +213,73 @@ namespace DA
             //}
         }
 
-        public bool SymbolDateExist(string symbol, string date)
+        public List<string> GetTickerList()
         {
-            bool exists = false;
+            var list = new List<string>();
             using (SqlCommand comm = new SqlCommand())
             {
                 using (SqlConnection conn = new SqlConnection(Cs))
                 {
-                    comm.CommandText =
-                        $"Select Count(1) From [Yahoo] Where [Date] = '{Convert.ToDateTime(date).ToString("yyyy-MM-dd")}' And Symbol = '{symbol}'";
+                    comm.CommandText = "Select Symbol From [Barchart].[dbo].[Top100] Order by [Date]";
                     comm.Connection = conn;
                     conn.Open();
-                    exists = Convert.ToBoolean(comm.ExecuteScalar());
+                    var dr = comm.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        list.Add(Convert.ToString(dr["Symbol"]));
+                    }
                 }
             }
-
-            return exists;
+            return list;
         }
+
+        public void UpdateTickerData(string symbol, string name)
+        {
+            string command = $"Update [Barchart].[dbo].[Top100] Set [Name] = '{name}', [Date] = GETDATE() Where Symbol = '{symbol}'";
+            using (SqlCommand comm = new SqlCommand())
+            {
+                using (SqlConnection conn = new SqlConnection(Cs))
+                {
+                    comm.CommandText = command;
+                    comm.Connection = conn;
+                    conn.Open();
+                    comm.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteTickerData(string symbol)
+        {
+            string command = $"Delete From [Barchart].[dbo].[Top100] Where Symbol = '{symbol}'";
+            using (SqlCommand comm = new SqlCommand())
+            {
+                using (SqlConnection conn = new SqlConnection(Cs))
+                {
+                    comm.CommandText = command;
+                    comm.Connection = conn;
+                    conn.Open();
+                    comm.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //public bool SymbolDateExist(string symbol, string date)
+        //{
+        //    bool exists = false;
+        //    using (SqlCommand comm = new SqlCommand())
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(Cs))
+        //        {
+        //            comm.CommandText =
+        //                $"Select Count(1) From [Yahoo] Where [Date] = '{Convert.ToDateTime(date).ToString("yyyy-MM-dd")}' And Symbol = '{symbol}'";
+        //            comm.Connection = conn;
+        //            conn.Open();
+        //            exists = Convert.ToBoolean(comm.ExecuteScalar());
+        //        }
+        //    }
+
+        //    return exists;
+        //}
     }
 
     public class StockResult

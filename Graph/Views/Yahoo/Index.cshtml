@@ -4,7 +4,7 @@
     ViewData["Title"] = "Yahoo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    
+    var weekdays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Where(d => d >= DayOfWeek.Monday && d <= DayOfWeek.Friday).Select(d => new SelectListItem { Text = d.ToString(), Value = d.ToString() }).ToList();
 }
 
 
@@ -16,7 +16,24 @@
     <div>@Html.DropDownList("tickerPickList", Model.TickerList)</div>
     <br />
 
+    <div>Buy Day of Week : </div>
+    <div>@Html.DropDownList("DayOfWeekList", weekdays)</div>
+    <br />
+    
+    <div>Percent Increase : </div>
+    <div>@Html.DropDownList("PercentIncrease", Model.PercentIncreaseList)</div>
+    <br />
+    
+    <div>Hold Days : </div>
+    <div>@Html.DropDownList("HoldDays", Model.HoldDays)</div>
+    <br />
+    
+    <div>Dump Percent : </div>
+    <div>@Html.DropDownList("Dump Percent", Model.DumpPercent)</div>
+    <br />
+    
     <div><input type="submit" value="Submit" /></div>
+    <br />
 }
 
 
@@ -38,6 +55,7 @@
     }
 }
 
+<div style="height:2px; border-color:black; border-width:1px;"></div>
 
 @{
     if (Model.YahooList != null)

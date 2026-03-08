@@ -23,6 +23,9 @@ namespace Graph.Controllers
         public IActionResult Index()
         {
             _yahooViewModel.TickerList = BuildSelectDropDownList("");
+            _yahooViewModel.PercentIncreaseList = BuildSelectPercentIncreaseList("1.0");
+            _yahooViewModel.HoldDays = BuildSelectHoldDaysList("5");
+            _yahooViewModel.DumpPercent = BuildSelectDumpPercentList(".01");
             
             return View("Index", _yahooViewModel);
         }
@@ -32,7 +35,12 @@ namespace Graph.Controllers
         {
             string[] qs = Request.QueryString.Value.Replace("?", "").Split("&");
             var symbol = qs[0].Split('=')[1];
+            var DayOfWeek = qs[1].Split('=')[1];
+            var PercentIncrease = Convert.ToDecimal(qs[2].Split('=')[1]);
+            var HoldDays = Convert.ToInt16(qs[3].Split('=')[1]);
+            var DumpPercent = Convert.ToDecimal(qs[4].Split('=')[1]);
 
+            tickerDA.DownloadSummary(symbol);
             tickerDA.DownloadHistory(symbol);
 
             _yahooViewModel.TickerList = BuildSelectDropDownList(symbol);
@@ -46,15 +54,81 @@ namespace Graph.Controllers
 
 
             // 2. Find Sell Date and Sell Price
-            var x = FindSellDate(_yahooViewModel.YahooList, _OriginalList.OrderBy(ol => ol.TradeDate).ToList());
+            var x = FindSellDate(_yahooViewModel.YahooList, _OriginalList.OrderBy(ol => ol.TradeDate).ToList(), PercentIncrease, HoldDays, DumpPercent);
             _yahooViewModel.YahooList = x.OrderByDescending(ol => ol.TradeDate).ToList();
 
+            // Summary Data
             _yahooViewModel.Gains = _yahooViewModel.YahooList.Sum(x => x.Gains);
             _yahooViewModel.Cost = _yahooViewModel.YahooList.Sum(x => x.ShareCost);
-            
+
+            // Drop Downlists           
+            _yahooViewModel.PercentIncreaseList = BuildSelectPercentIncreaseList(qs[2].Split('=')[1]);
+            _yahooViewModel.HoldDays = BuildSelectHoldDaysList(qs[3].Split('=')[1]);
+            _yahooViewModel.DumpPercent = BuildSelectDumpPercentList(qs[4].Split('=')[1]);
+
             return View("Index", _yahooViewModel);
         }
-        
+        public List<SelectListItem> BuildSelectPercentIncreaseList(string SelectedValue)
+        {
+            var pi = new List<SelectListItem>();
+
+            decimal x = 0.0m;
+
+            while (x < 20m)
+            {
+                pi.Add(new SelectListItem 
+                { 
+                    Text = x.ToString(), 
+                    Value = x.ToString(), 
+                    Selected = x.ToString().Equals(SelectedValue) 
+                });
+                
+                x = x + .5m;
+            }
+
+            return pi;
+        }
+        public List<SelectListItem> BuildSelectHoldDaysList(string SelectedValue)
+        {
+            var hd = new List<SelectListItem>();
+            
+            int x = 0;
+
+            while (x <= 20)
+            {
+                hd.Add(new SelectListItem 
+                { 
+                    Text = x.ToString(), 
+                    Value = x.ToString(), 
+                    Selected = x.ToString().Equals(SelectedValue) 
+                });
+                
+                x++;
+            }
+
+            return hd;
+        }
+
+        public List<SelectListItem> BuildSelectDumpPercentList(string SelectedValue)
+        {
+            var dp = new List<SelectListItem>();
+
+            decimal x = 0.0m;
+
+            while (x <= .01m)
+            {
+                dp.Add(new SelectListItem 
+                { 
+                    Text = x.ToString(), 
+                    Value = x.ToString(),
+                    Selected = x.ToString().Equals(SelectedValue)
+                });
+
+                x = x + .001m;
+            }
+
+            return dp;
+        }
         private List<SelectListItem> BuildSelectDropDownList(string selectedSymbol)
         {
             var selectList = new List<SelectListItem>();
@@ -78,15 +152,16 @@ namespace Graph.Controllers
             return selectList;
         }
 
-        private List<Yahoo> FindSellDate(List<Yahoo> yList, List<Yahoo> _OrignalList)
+        private List<Yahoo> FindSellDate(List<Yahoo> yList, List<Yahoo> _OrignalList, decimal PercentIncrease, int HoldDays, decimal DumpPercent)
         {
             List<Yahoo> SellDateList = new List<Yahoo>();
 
+            PercentIncrease = PercentIncrease * .01m;
             foreach (var y in yList)
             {
-                var sellPrice = (y.Open * .01m) + y.Open;
+                var sellPrice = Math.Round((y.Open * PercentIncrease) + y.Open, 2);
                 
-                var x = _OrignalList.Where(o => o.TradeDate >= y.TradeDate).Where(o => o.TradeDate <= y.TradeDate.AddDays(5)).Where(o => o.DayHigh >= sellPrice).FirstOrDefault();
+                var x = _OrignalList.Where(o => o.TradeDate >= y.TradeDate).Where(o => o.TradeDate <= y.TradeDate.AddDays(HoldDays)).Where(o => o.DayHigh >= sellPrice).FirstOrDefault();
                 if(x != null)
                 {
                     y.SellPrice = Math.Round(sellPrice,2);
@@ -96,10 +171,11 @@ namespace Graph.Controllers
                 }
                 else
                 {
-                    x = _OrignalList.OrderBy(o => o.TradeDate).Where(o => o.TradeDate > y.TradeDate.AddDays(5)).Where(o => o.DayHigh >= y.Open).FirstOrDefault();
+                    var SellPrice = Math.Round((y.Open * DumpPercent) + y.Open, 2);
+                    x = _OrignalList.OrderBy(o => o.TradeDate).Where(o => o.TradeDate > y.TradeDate.AddDays(HoldDays)).Where(o => o.DayHigh >= SellPrice).FirstOrDefault();
                     if(x != null)
                     {
-                        y.SellPrice = y.Open;
+                        y.SellPrice = SellPrice;
                         y.SellDate = x.TradeDate;
                         y.PurchaseDate = y.TradeDate;
                         y.PurchasePrice = y.Open;
@@ -135,14 +211,6 @@ namespace Graph.Controllers
 
                 if (week.Count > 0)
                 {
-
-                    //Console.WriteLine("");
-
-                    //Console.WriteLine(week.ToList().Last().TradeDate);
-                    //Console.WriteLine(week.ToList().Last().Open);
-                    //Console.WriteLine(week.OrderBy(y => y.DayHigh).Last().TradeDate);
-                    //Console.WriteLine(week.OrderBy(y => y.DayHigh).Last().DayHigh);
-
                     Yahoo yahoo = new Yahoo();
                     yahoo.Symbol = week.First().Symbol;
                     yahoo.TradeDate = week.ToList().Last().TradeDate;
@@ -151,8 +219,6 @@ namespace Graph.Controllers
                     yahoo.DayHighDate = week.OrderBy(y => y.DayHigh).Last().TradeDate;
 
                     byWeekList.Add(yahoo);
-
-                    //Console.WriteLine("");
                 }
 
                 monday = monday.AddDays(7);
